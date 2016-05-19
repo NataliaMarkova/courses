@@ -10,7 +10,7 @@ public class Computer extends Player {
     }
 
     @Override
-    public Cell move() {
-        return null;
+    public Cell move() throws GameException{
+        return getOtherField().getUnHitCell(getLastHitCell());
     }
 }

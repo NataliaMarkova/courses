@@ -30,10 +30,19 @@ public class Game {
                 secondPlayer = p;
             }
 
-            Cell cell = currentPlayer.move();
+            viewFields();
+
+            Cell cell = null;
+            try {
+                cell = currentPlayer.move();
+            } catch (GameException e) {
+                System.out.println("An error occurred");
+                return null;
+            }
             result = secondPlayer.getMoveResult(cell);
             try {
                 currentPlayer.processResult(cell, result);
+                System.out.println(result);
             } catch (GameException e) {
                 System.out.println("An error occurred");
                 if (!e.getMessage().isEmpty()) {
@@ -46,6 +55,10 @@ public class Game {
 
         }
        return currentPlayer;
+    }
+
+    private void viewFields() {
+        player1.viewFields();
     }
 
     public static void main(String[] args) {

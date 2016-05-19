@@ -2,6 +2,7 @@ package ua.epamcourses.natalia_markova.homework03.task07.model;
 
 import ua.epamcourses.natalia_markova.homework03.task07.service.ShipService;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -177,12 +178,48 @@ public class Field {
         return (getPossibleShipSize() == 0 ? false : true);
     }
 
+    public Cell getUnHitCell(Cell hitCell) throws GameException {
+        if (hitCell != null) {
+            int x = hitCell.getX();
+            int y = hitCell.getY();
+            for (int i = x - 1; i <= x + 1; i++ ) {
+                for (int j = y - 1; j <= y + 1; j++ ) {
+                    Cell cell = cells[i][j];
+                    if (!cell.isHit()) {
+                        return cell;
+                    }
+                }
+            }
+            throw new GameException("No possible cells found");
+        } else {
+            ArrayList<Cell> possibleCells = getPossibleCells();
+            if (possibleCells.size() == 0) {
+                throw new GameException("No possible cells found");
+            }
+            int index = ShipService.getRandomNumber(0, possibleCells.size() - 1);
+            return possibleCells.get(index);
+        }
+    }
+
     private boolean hasNullShips(Ship[] ships) {
-        for (Ship ship : ship3Decks) {
+        for (Ship ship : ships) {
             if (ship == null) {
                 return true;
             }
         }
         return false;
+    }
+
+    private ArrayList<Cell> getPossibleCells() {
+        ArrayList<Cell> possibleCells = new ArrayList<>();
+        for (int i = 0; i < 10; i++ ) {
+            for (int j = 0; j < 10; j++ ) {
+                Cell cell = cells[i][j];
+                if (!cell.isHit()) {
+                    possibleCells.add(cell);
+                }
+            }
+        }
+        return possibleCells;
     }
 }

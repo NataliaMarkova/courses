@@ -4,6 +4,8 @@ import ua.epamcourses.natalia_markova.homework03.task07.model.Cell;
 import ua.epamcourses.natalia_markova.homework03.task07.model.Ship;
 import ua.epamcourses.natalia_markova.homework03.task07.model.ShipInitializingException;
 
+import java.util.Random;
+
 /**
  * Created by natalia_markova on 13.05.2016.
  */
@@ -22,20 +24,21 @@ public class ShipService {
         ShipService.cells = cells;
         ShipService.usedCells = cells;
 
+        index = 0;
         initializeShip(4);
         index++;
         for (int i = 0; i < 2; i++) {
             initializeShip(3);
             index++;
         }
-        for (int i = 0; i < 3; i++) {
-            initializeShip(2);
-            index++;
-        }
-        for (int i = 0; i < 4; i++) {
-            initializeShip(1);
-            index++;
-        }
+//        for (int i = 0; i < 3; i++) {
+//            initializeShip(2);
+//            index++;
+//        }
+//        for (int i = 0; i < 4; i++) {
+//            initializeShip(1);
+//            index++;
+//        }
 
         return ships;
     }
@@ -44,19 +47,18 @@ public class ShipService {
         ShipFactory factory = new ShipFactory(decks);
         triedCells = usedCells.clone();
         while (hasUntriedCells()) {
-            for (int variant = 1; variant <= factory.getQtyOfVariants(); variant++) {
-                Cell initialCell = getFreeCell();
-                if (initialCell == null) {
-                    throw new ShipInitializingException();
-                }
-                Ship ship = factory.getShip(initialCell, variant);
-                if (shipIsOk(ship)) {
-                    ships[index] = ship;
-                    markCells(ship);
-                    markUsedCells(ship);
-                }
+            Cell initialCell = getFreeCell();
+            if (initialCell == null) {
+                throw new ShipInitializingException();
             }
-
+            int variant = getRandomNumber(1, factory.getQtyOfVariants());
+            Ship ship = factory.getShip(initialCell, variant);
+            if (shipIsOk(ship)) {
+                ships[index] = ship;
+                markCells(ship);
+                markUsedCells(ship);
+                return;
+            }
         }
     }
 
@@ -74,8 +76,8 @@ public class ShipService {
     private static Cell getFreeCell() {
         Cell cell = null;
         while (hasUntriedCells()) {
-            int x = (int) (Math.random() * 10) - 1;
-            int y = (int) (Math.random() * 10) - 1;
+            int x = getRandomNumber(0, 9);
+            int y = getRandomNumber(0, 9);
             cell = new Cell(x, y);
             if (cellIsUsed(cell)) {
                 triedCells[x][y] = cell;
@@ -87,11 +89,14 @@ public class ShipService {
     }
 
     private static boolean cellIsUsed(Cell cell) {
-        return usedCells[cell.getX()][cell.getY()].isPartOfAShip();
+        if (cell == null) {
+            return false;
+        }
+        Cell usedCell = usedCells[cell.getX()][cell.getY()];
+        return usedCell!= null && usedCell.isPartOfAShip();
     }
 
     private static boolean shipIsOk(Ship ship) {
-
         for (Cell cell : ship.getCells()) {
             int x = cell.getX();
             int y = cell.getY();
@@ -100,14 +105,17 @@ public class ShipService {
             }
             for (int i = x - 1; i <= x + 1; i++ ) {
                 for (int j = y - 1; j <= y + 1; j++ ) {
-                    if (cellIsUsed(cell)) {
+                    if (i < 0 || j < 0 || i > 9 || j > 9) {
+                        return false;
+                    }
+                    Cell currentCell = cells[i][j];
+                    if (cellIsUsed(currentCell)) {
                         return false;
                     }
                 }
             }
 
         }
-
         return true;
     }
 
@@ -124,7 +132,7 @@ public class ShipService {
             int y = cell.getY();
             for (int i = x - 1; i <= x + 1; i++ ) {
                 for (int j = y - 1; j <= y + 1; j++ ) {
-                    if (x >= 0 && x < 10 && y >=0 && y < 10) {
+                    if (i >= 0 && i < 10 && j >=0 && j < 10) {
                         if (usedCells[i][j] == null) {
                             usedCells[i][j] = new Cell(i, j);
                         }
@@ -132,6 +140,11 @@ public class ShipService {
                 }
             }
         }
+    }
+
+    public static int getRandomNumber(int min, int max) {
+        Random random = new Random();
+        return random.nextInt(max - min + 1) + min;
     }
 
 }

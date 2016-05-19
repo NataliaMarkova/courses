@@ -19,7 +19,9 @@ public class ShipFactory {
             case 3 : initializer = new Ship3DecksInitializer(); break;
             case 4 : initializer = new Ship4DecksInitializer(); break;
         }
-        throw new InvalidParameterException();
+        if (initializer == null) {
+            throw new InvalidParameterException();
+        }
     }
 
     public Ship getShip(Cell initialCell, int variant) {

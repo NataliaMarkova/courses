@@ -7,4 +7,5 @@ import ua.epamcourses.natalia_markova.homework03.task07.model.Field;
  */
 public interface FieldInitializer {
     Field initializeField();
+    Field initializeEmptyField();
 }

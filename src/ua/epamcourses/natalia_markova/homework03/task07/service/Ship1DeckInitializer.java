@@ -14,7 +14,7 @@ public class Ship1DeckInitializer extends ShipInitializer {
 
     @Override
     public Ship getShip(Cell initialCell, int variant) {
-        Cell[] cells = new Cell[2];
+        Cell[] cells = new Cell[1];
         cells[0] = initialCell;
         return new Ship(cells);
     }

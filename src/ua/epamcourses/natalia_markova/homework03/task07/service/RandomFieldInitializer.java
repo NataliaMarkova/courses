@@ -38,4 +38,18 @@ public class RandomFieldInitializer implements FieldInitializer {
         field.setShips(ships);
         return field;
     }
+
+    @Override
+    public Field initializeEmptyField() {
+        Field field = new Field();
+        Cell[][] cells = field.getCells();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                cells[i][j] = new Cell(i, j);
+            }
+        }
+        field.setCells(cells);
+        return field;
+    }
+
 }

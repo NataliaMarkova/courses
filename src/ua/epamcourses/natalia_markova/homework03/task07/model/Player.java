@@ -17,20 +17,74 @@ public abstract class Player {
     public Player() {
         FieldInitializer initializer = new RandomFieldInitializer();
         field = initializer.initializeField();
-        otherField = new Field();
+        otherField = initializer.initializeEmptyField();
     }
 
-    public Field getMyField() {
+    public Field getField() {
         return field;
     }
 
-    public abstract Cell move();
+    public Field getOtherField() {
+        return otherField;
+    }
+
+    public abstract Cell move() throws GameException;
+
     public MoveResult getMoveResult(Cell cell) {
         return field.getMoveResult(cell);
     }
+
     public void processResult(Cell cell, MoveResult result) throws GameException {
         otherField.markCell(cell, result);
+        if (result == MoveResult.SHOT) {
+            lastHitCell = cell;
+        } else if (result == MoveResult.DROWNED) {
+            lastHitCell = null;
+        }
     }
+
+    public void viewFields() {
+        // first line
+        for (int i = 0; i < 10; i++) {
+            System.out.print((i + 1) + "\t");
+        }
+        System.out.print("\t");
+        for (int i = 0; i < 10; i++) {
+            System.out.print((i + 1) + "\t");
+        }
+        System.out.println();
+
+        // fields
+        String letters = "אבגדהוזחטך";
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                viewCell(field.getCells()[i][j]);
+            }
+            System.out.print(letters.charAt(i) + "\t");
+            for (int j = 0; j < 10; j++) {
+                viewCell(otherField.getCells()[i][j]);
+            }
+            System.out.println();
+        }
+
+    }
+
+    private void viewCell(Cell cell) {
+        if (!cell.isHit() && !cell.isPartOfAShip()) {
+            // empty cell
+            System.out.print("\t");
+        } else if (!cell.isHit() && cell.isPartOfAShip()) {
+            // part of a ship
+            System.out.print("0\t");
+        } else if (cell.isHit() && cell.isPartOfAShip()) {
+            // part of a ship and hit
+            System.out.print("X\t");
+        } else {
+            // empty and hit
+            System.out.print("-\t");
+        }
+    }
+
     public boolean won() {
         return otherField.hasShipsLeft();
     }
