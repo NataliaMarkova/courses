@@ -1,0 +1,8 @@
+Nothing Esle Matters;ROCK;Black album;Metallica;1991;389
+My Friend Of Misery;ROCK;Black album;Metallica;1991;410
+The Unforgiven;ROCK;Black album;Metallica;1991;387
+I Want to Be Like Jesus in My Heart;BLUES;Spiritual singles;Blind Lemon Jefferson;1925;789
+Moonlight sonata;CLASSIC;;Ludvig Van Beethoven;;428
+Break On Through;ROCK;The Doors;The Doors;1967;257
+La Primavera - Allegro;CLASSIC;Le Quattro Stagioni;Vivaldi;;628
+New York, New York;JAZZ;;Frank Sinatra;;628
