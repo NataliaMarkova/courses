@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by yack on 17.05.2016.
+ * Created by natalia_markova on 17.05.2016.
  */
 public class Text {
     private List<Sentence> sentences = new ArrayList<>();

@@ -49,7 +49,7 @@ public class Sentence {
 
     @Override
     public String toString() {
-        //StringBuilder str = new StringBuilder(String.valueOf(getQtyOfWords())).append(": ");
+//        StringBuilder str = new StringBuilder(String.valueOf(getQtyOfWords())).append(": ");
         StringBuilder str = new StringBuilder();
         for (SentenceElement element : elements) {
             str.append(element.toString());

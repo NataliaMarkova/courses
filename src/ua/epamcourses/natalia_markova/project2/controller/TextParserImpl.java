@@ -103,7 +103,7 @@ public class TextParserImpl implements TextParser {
         if (matcher.find()) {
             return SentenceElementType.PUNCTUATION_MARK;
         }
-        pattern = Pattern.compile("[a-zA-Zà-ÿÀ-ß](\\w)*");
+        pattern = Pattern.compile("[a-zA-Z\\u0400-\\u044F](\\w})*");
         matcher = pattern.matcher(str);
         if (matcher.find()) {
             return SentenceElementType.WORD;

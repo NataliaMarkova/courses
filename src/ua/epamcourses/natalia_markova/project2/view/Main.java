@@ -18,8 +18,8 @@ public class Main {
     public static void main(String[] args) {
 
         String textString = "";
-        String fileName = "O:\\!Java\\pratch8.txt";
-        //String fileName = "O:\\!Java\\test_parser.txt";
+        String fileName = "D:\\!Java\\pratch8.txt";
+//        String fileName = "D:\\!Java\\test_parser.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName));) {
             String line = "";
             while ((line = reader.readLine()) != null) {
