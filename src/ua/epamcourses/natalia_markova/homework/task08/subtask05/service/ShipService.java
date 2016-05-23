@@ -22,7 +22,7 @@ public class ShipService {
 
     public static Ship[] initializeShips(Cell[][] cells) throws ShipInitializingException {
         ShipService.cells = cells;
-        ShipService.usedCells = cells;
+        ShipService.usedCells = cells.clone();
 
         index = 0;
         initializeShip(4);
@@ -31,14 +31,14 @@ public class ShipService {
             initializeShip(3);
             index++;
         }
-//        for (int i = 0; i < 3; i++) {
-//            initializeShip(2);
-//            index++;
-//        }
-//        for (int i = 0; i < 4; i++) {
-//            initializeShip(1);
-//            index++;
-//        }
+        for (int i = 0; i < 3; i++) {
+            initializeShip(2);
+            index++;
+        }
+        for (int i = 0; i < 4; i++) {
+            initializeShip(1);
+            index++;
+        }
 
         return ships;
     }
@@ -93,7 +93,7 @@ public class ShipService {
             return false;
         }
         Cell usedCell = usedCells[cell.getX()][cell.getY()];
-        return usedCell!= null && usedCell.isPartOfAShip();
+        return usedCell != null; //&& usedCell.isPartOfAShip();
     }
 
     private static boolean shipIsOk(Ship ship) {
@@ -106,7 +106,7 @@ public class ShipService {
             for (int i = x - 1; i <= x + 1; i++ ) {
                 for (int j = y - 1; j <= y + 1; j++ ) {
                     if (i < 0 || j < 0 || i > 9 || j > 9) {
-                        return false;
+                        continue;
                     }
                     Cell currentCell = cells[i][j];
                     if (cellIsUsed(currentCell)) {
