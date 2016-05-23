@@ -6,15 +6,21 @@ import java.util.List;
 /**
  * Created by natalia_markova on 17.05.2016.
  */
-public abstract class SentenceElement {
+public class SentenceElement {
+    private SentenceElementType type;
     private List<Character> characters = new ArrayList<>();
 
-    public SentenceElement(List<Character> characters) {
+    public SentenceElement(List<Character> characters, SentenceElementType type) {
         this.characters = characters;
+        this.type = type;
     }
 
     public int length() {
         return characters.size();
+    }
+
+    public SentenceElementType getType() {
+        return type;
     }
 
     @Override

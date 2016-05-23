@@ -85,13 +85,7 @@ public class TextParserImpl implements TextParser {
                 chars.add(ch);
             }
             SentenceElementType type = getElementType(str);
-            if (type == SentenceElementType.PUNCTUATION_MARK) {
-                sentenceElement = new PunctuationMark(chars);
-            } else if (type == SentenceElementType.WORD) {
-                sentenceElement = new Word(chars);
-            } else {
-                sentenceElement = new Symbol(chars);
-            }
+            sentenceElement = new SentenceElement(chars, type);
             elements.put(str, sentenceElement);
         }
         return sentenceElement;

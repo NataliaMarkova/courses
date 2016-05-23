@@ -36,7 +36,7 @@ public class Sentence {
     public int getQtyOfWords() {
         int res = 0;
         for (SentenceElement element: elements) {
-            if (element.getClass() == Word.class) {
+            if (element.getType() == SentenceElementType.WORD) {
                 res++;
             }
         }
