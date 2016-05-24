@@ -8,7 +8,8 @@ import java.io.InputStreamReader;
  */
 public class Human extends Player {
 
-    public Human() {
+    public Human() throws ShipInitializingException {
+        super();
         setName("Human");
     }
 
@@ -16,13 +17,13 @@ public class Human extends Player {
     public Cell move() throws GameException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         Cell cell = null;
-        String letters = "אבגדהוזחטך";
+        String letters = "abcdefghij";
         while (cell == null) {
             System.out.println("Your move: ");
             try {
                 String input = reader.readLine();
                 input = input.toLowerCase();
-                if (input.matches("[" + letters + "][1-9]0?")) {
+                if (input.matches("[a-j]([1-9]|10)")) {
                     int x = letters.indexOf(input.charAt(0));
                     int y = Integer.valueOf(input.substring(1)) - 1;
                     return new Cell(x, y);

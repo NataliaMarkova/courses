@@ -11,20 +11,12 @@ import ua.epamcourses.natalia_markova.homework.task08.subtask05.model.ShipInitia
 public class RandomFieldInitializer implements FieldInitializer {
 
     @Override
-    public Field initializeField() {
+    public Field initializeField() throws ShipInitializingException {
         Field field = new Field();
-        Ship[] ships = null;
         Cell[][] cells = field.getCells();
 
         // initializing ships
-        while (true) {
-            try {
-                ships = ShipService.initializeShips(cells);
-                break;
-            } catch (ShipInitializingException e) {
-
-            }
-        }
+        Ship[] ships = ShipService.initializeShips(cells);
 
         // initializing the rest cells of the field
         for (int i = 0; i < 10; i++) {

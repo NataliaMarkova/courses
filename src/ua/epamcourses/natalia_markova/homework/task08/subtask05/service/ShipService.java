@@ -4,6 +4,8 @@ import ua.epamcourses.natalia_markova.homework.task08.subtask05.model.Cell;
 import ua.epamcourses.natalia_markova.homework.task08.subtask05.model.Ship;
 import ua.epamcourses.natalia_markova.homework.task08.subtask05.model.ShipInitializingException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -12,9 +14,9 @@ import java.util.Random;
 public class ShipService {
 
     private static Cell[][] cells; // game field cells
-    private static Cell[][] triedCells;
+    private static List<Cell> availableCells;
     private static Cell[][] usedCells;
-    private static Ship[] ships = new Ship[10];
+    private static Ship[] ships;
     private static int index;
 
     private ShipService() {
@@ -22,7 +24,13 @@ public class ShipService {
 
     public static Ship[] initializeShips(Cell[][] cells) throws ShipInitializingException {
         ShipService.cells = cells;
-        ShipService.usedCells = cells.clone();
+        ships = new Ship[10];
+        usedCells = new Cell[10][10];
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                usedCells[i][j] = new Cell(i, j);
+            }
+        }
 
         index = 0;
         initializeShip(4);
@@ -45,12 +53,9 @@ public class ShipService {
 
     private static void initializeShip(int decks) throws ShipInitializingException{
         ShipFactory factory = new ShipFactory(decks);
-        triedCells = usedCells.clone();
-        while (hasUntriedCells()) {
+        defineAvailableCells();
+        while (availableCells.size() > 0) {
             Cell initialCell = getFreeCell();
-            if (initialCell == null) {
-                throw new ShipInitializingException();
-            }
             int variant = getRandomNumber(1, factory.getQtyOfVariants());
             Ship ship = factory.getShip(initialCell, variant);
             if (shipIsOk(ship)) {
@@ -59,41 +64,25 @@ public class ShipService {
                 markUsedCells(ship);
                 return;
             }
+            availableCells.remove(initialCell);
         }
+        throw new ShipInitializingException();
     }
 
-    private static boolean hasUntriedCells() {
+    private static void defineAvailableCells() {
+        availableCells = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                if (triedCells[i][j] == null) {
-                    return true;
+                if (!usedCells[i][j].isPartOfAShip()) {
+                    availableCells.add(usedCells[i][j]);
                 }
             }
         }
-        return false;
     }
 
     private static Cell getFreeCell() {
-        Cell cell = null;
-        while (hasUntriedCells()) {
-            int x = getRandomNumber(0, 9);
-            int y = getRandomNumber(0, 9);
-            cell = new Cell(x, y);
-            if (cellIsUsed(cell)) {
-                triedCells[x][y] = cell;
-            } else {
-                break;
-            }
-        }
-        return cell;
-    }
-
-    private static boolean cellIsUsed(Cell cell) {
-        if (cell == null) {
-            return false;
-        }
-        Cell usedCell = usedCells[cell.getX()][cell.getY()];
-        return usedCell != null; //&& usedCell.isPartOfAShip();
+        int index = getRandomNumber(0, availableCells.size() - 1);
+        return availableCells.get(index);
     }
 
     private static boolean shipIsOk(Ship ship) {
@@ -119,6 +108,14 @@ public class ShipService {
         return true;
     }
 
+    private static boolean cellIsUsed(Cell cell) {
+        if (cell == null) {
+            return false;
+        }
+        Cell usedCell = usedCells[cell.getX()][cell.getY()];
+        return usedCell.isPartOfAShip();
+    }
+
     private static void markCells(Ship ship) {
         for (Cell cell : ship.getCells()) {
             cell.setIsPartOfAShip(true);
@@ -133,8 +130,8 @@ public class ShipService {
             for (int i = x - 1; i <= x + 1; i++ ) {
                 for (int j = y - 1; j <= y + 1; j++ ) {
                     if (i >= 0 && i < 10 && j >=0 && j < 10) {
-                        if (usedCells[i][j] == null) {
-                            usedCells[i][j] = new Cell(i, j);
+                        if (!usedCells[i][j].isPartOfAShip()) {
+                            usedCells[i][j].setIsPartOfAShip(true);
                         }
                     }
                 }

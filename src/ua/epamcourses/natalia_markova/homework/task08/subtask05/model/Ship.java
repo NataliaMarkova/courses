@@ -1,6 +1,7 @@
 package ua.epamcourses.natalia_markova.homework.task08.subtask05.model;
 
 import java.security.InvalidParameterException;
+import java.util.Arrays;
 
 /**
  * Created by natalia_markova on 13.05.2016.
@@ -38,7 +39,7 @@ public class Ship {
     public boolean isDrowned() {
         for (Cell cell : cells) {
             if (!cell.isHit()) {
-                return true;
+                return false;
             }
         }
         return true;
@@ -46,7 +47,7 @@ public class Ship {
 
     public boolean hasCell(Cell cell) {
         for (Cell c : cells) {
-            if (c.equals(cell)) {
+            if (c != null && c.equals(cell)) {
                 return true;
             }
         }
@@ -55,7 +56,7 @@ public class Ship {
 
     public int getSize() {
         int size = 0;
-        for (int i = 1; i < size; i++) {
+        for (int i = 0; i < cells.length; i++) {
             if (cells[i] != null) {
                 size++;
             } else {
@@ -65,4 +66,10 @@ public class Ship {
         return size;
     }
 
+    @Override
+    public String toString() {
+        return "Ship{" +
+                "cells=" + Arrays.toString(cells) +
+                '}';
+    }
 }

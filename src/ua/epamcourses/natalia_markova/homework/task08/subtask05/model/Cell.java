@@ -64,4 +64,11 @@ public class Cell {
         result = 31 * result + y;
         return result;
     }
+
+    @Override
+    public String toString() {
+        String letters = "abcdefghij";
+        return String.valueOf(letters.charAt(x)) + (y + 1);
+    }
+
 }

@@ -41,7 +41,7 @@ public class Field {
         this.ships = ships;
     }
 
-    public MoveResult getMoveResult(Cell cell) {
+    public MoveResult getMoveResult(Cell cell) throws GameException {
         int x = cell.getX();
         int y = cell.getY();
         cells[x][y].setIsHit(true);
@@ -49,17 +49,15 @@ public class Field {
             return MoveResult.MISS;
         }
         Ship ship = getShipByCell(cell);
-        if (ship != null) {
-            if (ship.hasCell(cell)) {
-                if (ship.isDrowned()) {
-                    markCellsAsHit(ship);
-                    return MoveResult.DROWNED;
-                } else {
-                    return MoveResult.SHOT;
-                }
-            }
+        if (ship == null) {
+            throw new GameException("No ship found by cell: " + cell + System.getProperty("line.separator") + "ships: " + Arrays.toString(ships));
         }
-        return null;
+        if (ship.isDrowned()) {
+            markCellsAsHit(ship);
+            return MoveResult.DROWNED;
+        } else {
+            return MoveResult.SHOT;
+        }
     }
 
     public void markCell(Cell cell, MoveResult result) throws GameException{
@@ -75,8 +73,8 @@ public class Field {
         fieldCell.setIsPartOfAShip(true);
         for (int i = x - 1; i <= x + 1; i++ ) {
             for (int j = y - 1; j <= y + 1; j++ ) {
-                if (x >= 0 && x < 10 && y >=0 && y < 10) {
-                    ship = getShipByCell(new Cell(x, y));
+                if (i >= 0 && i < 10 && j >=0 && j < 10) {
+                    ship = getShipByCell(new Cell(i, j));
                     if (ship != null) {
                         break;
                     }
@@ -92,12 +90,14 @@ public class Field {
             if (size == 0) {
                 throw new GameException("All ships are drowned");
             }
-            ship = new Ship(getPossibleShipSize());
+            ship = new Ship(size);
             ship.setCell(fieldCell);
             setShip(ship);
+        } else {
+            ship.setCell(fieldCell);
         }
         if (result == MoveResult.DROWNED) {
-            int index = Arrays.binarySearch(ships, ship);
+            int index = getShipIndex(ship);
             int size = ship.getSize();
             Ship theShip = new Ship(size);
             for (Cell shipCell : ship.getCells()) {
@@ -108,17 +108,27 @@ public class Field {
             }
             ships[index] = theShip;
             if (size == 1) {
-                setShip(ship1Deck, ship);
+                setShip(ship1Deck, theShip);
             } else if (size == 2) {
-                setShip(ship2Decks, ship);
+                setShip(ship2Decks, theShip);
             } else if (size == 3) {
-                setShip(ship3Decks, ship);
+                setShip(ship3Decks, theShip);
             } else if (size == 4) {
-                setShip(ship4Decks, ship);
+                setShip(ship4Decks, theShip);
             }
-            markCellsAsHit(ship);
+            markCellsAsHit(theShip);
         }
 
+    }
+
+    private int getShipIndex(Ship ship) throws GameException{
+        for (int i = 0; i < ships.length; i++) {
+            Ship sh = ships[i];
+            if (sh == ship) {
+                return i;
+            }
+        }
+        throw new GameException("The ship " + ship.toString() + " + is not found in ships");
     }
 
     private void setShip(Ship ship) throws GameException{
@@ -132,12 +142,12 @@ public class Field {
                 return;
             }
         }
-        throw new GameException();
+        throw new GameException("Couldn't set a ship!");
     }
 
     private Ship getShipByCell(Cell cell) {
         for (Ship ship : ships) {
-            if (ship.hasCell(cell)) {
+            if (ship!= null && ship.hasCell(cell)) {
                 return ship;
             }
         }
@@ -148,9 +158,9 @@ public class Field {
         for (Cell cell : ship.getCells()) {
             int x = cell.getX();
             int y = cell.getY();
-            for (int i = x - 1; i <= x + 1; i++ ) {
-                for (int j = y - 1; j <= y + 1; j++ ) {
-                    if (x >= 0 && x < 10 && y >=0 && y < 10) {
+            for (int i = x - 1; i <= x + 1; i++) {
+                for (int j = y - 1; j <= y + 1; j++) {
+                    if (i >= 0 && i < 10 && j >=0 && j < 10) {
                         cells[i][j].setIsHit(true);
                     }
                 }
@@ -184,9 +194,11 @@ public class Field {
             int y = hitCell.getY();
             for (int i = x - 1; i <= x + 1; i++ ) {
                 for (int j = y - 1; j <= y + 1; j++ ) {
-                    Cell cell = cells[i][j];
-                    if (!cell.isHit()) {
-                        return cell;
+                    if (i >= 0 && i < 10 && j >=0 && j < 10) {
+                        Cell cell = cells[i][j];
+                        if (!cell.isHit()) {
+                            return cell;
+                        }
                     }
                 }
             }

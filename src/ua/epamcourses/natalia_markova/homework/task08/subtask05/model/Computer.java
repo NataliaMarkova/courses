@@ -5,12 +5,20 @@ package ua.epamcourses.natalia_markova.homework.task08.subtask05.model;
  */
 public class Computer extends Player {
 
-    public Computer() {
+    public Computer() throws ShipInitializingException {
+        super();
         setName("Computer");
     }
 
     @Override
     public Cell move() throws GameException{
-        return getOtherField().getUnHitCell(getLastHitCell());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+
+        }
+        Cell cell = getOtherField().getUnHitCell(getLastHitCell());
+        System.out.println(getName() + ": " + cell);
+        return cell;
     }
 }
