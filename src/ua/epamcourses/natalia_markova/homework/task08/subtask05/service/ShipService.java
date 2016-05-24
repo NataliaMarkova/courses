@@ -56,7 +56,7 @@ public class ShipService {
         defineAvailableCells();
         while (availableCells.size() > 0) {
             Cell initialCell = getFreeCell();
-            int variant = getRandomNumber(1, factory.getQtyOfVariants());
+            int variant = GameService.getRandomNumber(1, factory.getQtyOfVariants());
             Ship ship = factory.getShip(initialCell, variant);
             if (shipIsOk(ship)) {
                 ships[index] = ship;
@@ -81,7 +81,7 @@ public class ShipService {
     }
 
     private static Cell getFreeCell() {
-        int index = getRandomNumber(0, availableCells.size() - 1);
+        int index = GameService.getRandomNumber(0, availableCells.size() - 1);
         return availableCells.get(index);
     }
 
@@ -137,11 +137,6 @@ public class ShipService {
                 }
             }
         }
-    }
-
-    public static int getRandomNumber(int min, int max) {
-        Random random = new Random();
-        return random.nextInt(max - min + 1) + min;
     }
 
 }

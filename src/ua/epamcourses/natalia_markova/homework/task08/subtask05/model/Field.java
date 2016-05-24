@@ -1,5 +1,6 @@
 package ua.epamcourses.natalia_markova.homework.task08.subtask05.model;
 
+import ua.epamcourses.natalia_markova.homework.task08.subtask05.service.GameService;
 import ua.epamcourses.natalia_markova.homework.task08.subtask05.service.ShipService;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class Field {
         fieldCell.setIsPartOfAShip(true);
         for (int i = x - 1; i <= x + 1; i++ ) {
             for (int j = y - 1; j <= y + 1; j++ ) {
-                if (cellIsOk(i, j)) {
+                if (GameService.cellIsOk(i, j)) {
                     ship = getShipByCell(new Cell(i, j));
                     if (ship != null) {
                         break;
@@ -158,7 +159,7 @@ public class Field {
             int y = cell.getY();
             for (int i = x - 1; i <= x + 1; i++) {
                 for (int j = y - 1; j <= y + 1; j++) {
-                    if (cellIsOk(i, j)) {
+                    if (GameService.cellIsOk(i, j)) {
                         cells[i][j].setIsHit(true);
                     }
                 }
@@ -197,13 +198,13 @@ public class Field {
                 int y = hitCell.getY();
 
                 for (int i = - 1; i <= 1; i = i + 2) {
-                    if (cellIsOk(x + i, y)) {
+                    if (GameService.cellIsOk(x + i, y)) {
                         Cell cell = cells[x + i][y];
                         if (!cell.isHit()) {
                             possibleCells.add(cell);
                         }
                     }
-                    if (cellIsOk(x, y + i)) {
+                    if (GameService.cellIsOk(x, y + i)) {
                         Cell cell = cells[x][y + i];
                         if (!cell.isHit()) {
                             possibleCells.add(cell);
@@ -214,14 +215,14 @@ public class Field {
             if (possibleCells.size() == 0) {
                 throw new GameException("No possible cells found");
             }
-            int index = ShipService.getRandomNumber(0, possibleCells.size() -  1);
+            int index = GameService.getRandomNumber(0, possibleCells.size() -  1);
             return possibleCells.get(index);
         } else {
             ArrayList<Cell> possibleCells = getPossibleCells();
             if (possibleCells.size() == 0) {
                 throw new GameException("No possible cells found");
             }
-            int index = ShipService.getRandomNumber(0, possibleCells.size() - 1);
+            int index = GameService.getRandomNumber(0, possibleCells.size() - 1);
             return possibleCells.get(index);
         }
     }
@@ -246,13 +247,6 @@ public class Field {
             }
         }
         return possibleCells;
-    }
-
-    private boolean cellIsOk(int x, int y) {
-        if (x >= 0 && x < 10 && y >=0 && y < 10) {
-            return true;
-        }
-        return false;
     }
 
 }
