@@ -136,7 +136,7 @@ public class Ship4DecksInitializer extends ShipInitializer {
         } else if (variant == 18) {
             //*
             // // //
-            cells[1] = new Cell(initialCell.getX(), initialCell.getY());
+            cells[1] = new Cell(initialCell.getX(), initialCell.getY() + 1);
             cells[2] = new Cell(initialCell.getX() + 1, initialCell.getY() + 1);
             cells[3] = new Cell(initialCell.getX() + 2, initialCell.getY() + 1);
         } else if (variant == 19) {
