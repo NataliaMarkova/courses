@@ -13,7 +13,7 @@ public abstract class Player {
     private String name;
     private Field field;
     private Field otherField;
-    private Cell lastHitCell;
+    private Ship lastHitShip;
 
 
     public Player() throws ShipInitializingException {
@@ -37,11 +37,11 @@ public abstract class Player {
     }
 
     public void processResult(Cell cell, MoveResult result) throws GameException {
-        otherField.markCell(cell, result);
+        Ship ship = otherField.markCell(cell, result);
         if (result == MoveResult.SHOT) {
-            lastHitCell = cell;
+            lastHitShip = ship;
         } else if (result == MoveResult.DROWNED) {
-            lastHitCell = null;
+            lastHitShip = null;
         }
     }
 
@@ -99,12 +99,12 @@ public abstract class Player {
         this.name = name;
     }
 
-    public Cell getLastHitCell() {
-        return lastHitCell;
+    public Ship getLastHitShip() {
+        return lastHitShip;
     }
 
-    public void setLastHitCell(Cell lastHitCell) {
-        this.lastHitCell = lastHitCell;
+    public void setLastHitShip(Ship lastHitShip) {
+        this.lastHitShip = lastHitShip;
     }
 
     @Override

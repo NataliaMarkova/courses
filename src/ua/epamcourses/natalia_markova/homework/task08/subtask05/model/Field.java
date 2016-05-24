@@ -4,6 +4,7 @@ import ua.epamcourses.natalia_markova.homework.task08.subtask05.service.ShipServ
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by natalia_markova on 13.05.2016.
@@ -18,9 +19,6 @@ public class Field {
     private Ship[] ship3Decks = new Ship[2];
     private Ship[] ship2Decks = new Ship[3];
     private Ship[] ship1Deck = new Ship[4];
-
-    private int index;
-
 
     public Field() {
     }
@@ -60,20 +58,20 @@ public class Field {
         }
     }
 
-    public void markCell(Cell cell, MoveResult result) throws GameException{
+    public Ship markCell(Cell cell, MoveResult result) throws GameException{
 
         int x = cell.getX();
         int y = cell.getY();
         Cell fieldCell = cells[x][y];
         fieldCell.setIsHit(true);
         if (result == MoveResult.MISS) {
-            return;
+            return null;
         }
         Ship ship = null;
         fieldCell.setIsPartOfAShip(true);
         for (int i = x - 1; i <= x + 1; i++ ) {
             for (int j = y - 1; j <= y + 1; j++ ) {
-                if (i >= 0 && i < 10 && j >=0 && j < 10) {
+                if (cellIsOk(i, j)) {
                     ship = getShipByCell(new Cell(i, j));
                     if (ship != null) {
                         break;
@@ -118,7 +116,7 @@ public class Field {
             }
             markCellsAsHit(theShip);
         }
-
+        return ship;
     }
 
     private int getShipIndex(Ship ship) throws GameException{
@@ -160,7 +158,7 @@ public class Field {
             int y = cell.getY();
             for (int i = x - 1; i <= x + 1; i++) {
                 for (int j = y - 1; j <= y + 1; j++) {
-                    if (i >= 0 && i < 10 && j >=0 && j < 10) {
+                    if (cellIsOk(i, j)) {
                         cells[i][j].setIsHit(true);
                     }
                 }
@@ -188,21 +186,36 @@ public class Field {
         return (getPossibleShipSize() == 0 ? false : true);
     }
 
-    public Cell getUnHitCell(Cell hitCell) throws GameException {
-        if (hitCell != null) {
-            int x = hitCell.getX();
-            int y = hitCell.getY();
-            for (int i = x - 1; i <= x + 1; i++ ) {
-                for (int j = y - 1; j <= y + 1; j++ ) {
-                    if (i >= 0 && i < 10 && j >=0 && j < 10) {
-                        Cell cell = cells[i][j];
+    public Cell getUnHitCell(Ship hitShip) throws GameException {
+        if (hitShip != null) {
+            List<Cell> possibleCells = new ArrayList<>();
+            for (Cell hitCell : hitShip.getCells()) {
+                if (hitCell == null) {
+                    break;
+                }
+                int x = hitCell.getX();
+                int y = hitCell.getY();
+
+                for (int i = - 1; i <= 1; i = i + 2) {
+                    if (cellIsOk(x + i, y)) {
+                        Cell cell = cells[x + i][y];
                         if (!cell.isHit()) {
-                            return cell;
+                            possibleCells.add(cell);
+                        }
+                    }
+                    if (cellIsOk(x, y + i)) {
+                        Cell cell = cells[x][y + i];
+                        if (!cell.isHit()) {
+                            possibleCells.add(cell);
                         }
                     }
                 }
             }
-            throw new GameException("No possible cells found");
+            if (possibleCells.size() == 0) {
+                throw new GameException("No possible cells found");
+            }
+            int index = ShipService.getRandomNumber(0, possibleCells.size() -  1);
+            return possibleCells.get(index);
         } else {
             ArrayList<Cell> possibleCells = getPossibleCells();
             if (possibleCells.size() == 0) {
@@ -234,4 +247,12 @@ public class Field {
         }
         return possibleCells;
     }
+
+    private boolean cellIsOk(int x, int y) {
+        if (x >= 0 && x < 10 && y >=0 && y < 10) {
+            return true;
+        }
+        return false;
+    }
+
 }

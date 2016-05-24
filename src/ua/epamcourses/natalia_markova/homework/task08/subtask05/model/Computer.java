@@ -17,7 +17,7 @@ public class Computer extends Player {
         } catch (InterruptedException e) {
 
         }
-        Cell cell = getOtherField().getUnHitCell(getLastHitCell());
+        Cell cell = getOtherField().getUnHitCell(getLastHitShip());
         System.out.println(getName() + ": " + cell);
         return cell;
     }
