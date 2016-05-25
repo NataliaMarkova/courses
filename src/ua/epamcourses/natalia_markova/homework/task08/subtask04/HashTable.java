@@ -9,16 +9,18 @@ import java.util.*;
 public class HashTable<K,V> implements Map<K,V>{
 
     private int bucketSize = 10;
-    private List<List<Node<K,V>>> data;
+    private Node<K,V>[] data;
     private int size;
 
     private class Node<K,V> implements Map.Entry<K,V>{
         private K key;
         private V value;
+        private Node<K,V> next;
 
-        public Node(K key, V value) {
+        public Node(K key, V value, Node<K,V> next) {
             this.key = key;
             this.value = value;
+            this.next = next;
         }
 
         @Override
@@ -33,17 +35,7 @@ public class HashTable<K,V> implements Map<K,V>{
     }
 
     public HashTable() {
-        this(0);
-    }
-
-    public HashTable(int bucketSize) {
-        if (bucketSize > 0) {
-            this.bucketSize = bucketSize;
-        }
-        data = new ArrayList<>(this.bucketSize);
-        for (int i = 0; i < this.bucketSize; i++) {
-            data.add(new LinkedList<>());
-        }
+        data = (Node<K,V>[]) new Node[bucketSize];
     }
 
     @Override
@@ -59,31 +51,42 @@ public class HashTable<K,V> implements Map<K,V>{
     @Override
     public boolean containsKey(K key) {
         int index = getKeyIndex(key);
-        Node<K,V> node = getNodeByKey(data.get(index), key);
+        Node<K,V> node = getNodeByKey(data[index], key);
         return node != null;
     }
 
     @Override
     public V get(K key) {
         int index = getKeyIndex(key);
-        Node<K,V> node = getNodeByKey(data.get(index), key);
+        Node<K,V> node = getNodeByKey(data[index], key);
         return (node == null ? null : node.value);
     }
 
     @Override
     public V put(K key, V value) {
         int index = getKeyIndex(key);
-        List<Node<K,V>> list = data.get(index);
+        Node<K,V> node = data[index];
+        if (node == null) {
+            data[index] = new Node<K,V>(key, value, null);
+            size++;
+            return null;
+        }
         V oldValue = null;
-        for (Node<K,V> node: list) {
+        Node<K,V> prevNode = null;
+        while (node != null) {
             if (node.key.equals(key)) {
                 oldValue = node.value;
                 node.value = value;
                 break;
             }
+            prevNode = node;
+            node = node.next;
         }
         if (oldValue == null) {
-            list.add(new Node<K, V>(key, value));
+            Node<K, V> newNode = new Node<K, V>(key, value, null);
+            if (prevNode != null) {
+                prevNode.next = newNode;
+            }
             size++;
         }
         return oldValue;
@@ -92,33 +95,44 @@ public class HashTable<K,V> implements Map<K,V>{
     @Override
     public V remove(K key) {
         int index = getKeyIndex(key);
-        List<Node<K,V>> list = data.get(index);
+        Node<K,V> node = data[index];
+        if (node == null) {
+            return null;
+        }
         V value = null;
-        Node<K,V> node = getNodeByKey(list, key);
-        if (node != null) {
-            value = node.value;
-            list.remove(node);
-            size--;
-
+        Node<K,V> prevNode = null;
+        while (node != null) {
+            if (node.key.equals(key)) {
+                value = node.value;
+                size--;
+                break;
+            }
+            prevNode = node;
+            node = node.next;
+        }
+        if (value != null) {
+            if (prevNode != null) {
+                prevNode.next = node.next;
+            } else {
+                data[index] = node.next;
+            }
         }
         return value;
     }
 
     @Override
     public void clear() {
-        data = new ArrayList<>(this.bucketSize);
-        for (int i = 0; i < this.bucketSize; i++) {
-            data.add(new LinkedList<>());
-        }
+        data = (Node<K,V>[]) new Node[this.bucketSize];
         size = 0;
     }
 
     @Override
     public Set<Entry<K, V>> entrySet() {
         Set<Entry<K, V>> entrySet = new HashSet<>();
-        for (List<Node<K,V>> list : data) {
-            for (Node<K,V> node : list) {
+        for (Node<K,V> node : data) {
+            while (node != null) {
                 entrySet.add(node);
+                node = node.next;
             }
         }
         return entrySet;
@@ -127,9 +141,10 @@ public class HashTable<K,V> implements Map<K,V>{
     @Override
     public Set<K> keySet() {
         Set<K> keySet = new HashSet<>();
-        for (List<Node<K,V>> list : data) {
-            for (Node<K,V> node : list) {
+        for (Node<K,V> node : data) {
+            while (node != null) {
                 keySet.add(node.key);
+                node = node.next;
             }
         }
         return keySet;
@@ -153,8 +168,12 @@ public class HashTable<K,V> implements Map<K,V>{
         return index % bucketSize;
     }
 
-    private Node<K,V> getNodeByKey(List<Node<K,V>> list, K key) {
-        for (Node<K,V> node : list) {
+    private Node<K,V> getNodeByKey(Node<K,V> firstNode, K key) {
+        if (firstNode == null) {
+            return null;
+        }
+        Node<K,V> node = firstNode;
+        while (node != null) {
             if (node.key.equals(key)) {
                 return node;
             }
@@ -174,6 +193,5 @@ public class HashTable<K,V> implements Map<K,V>{
         map.clear();
         map.put(2, 200);
         System.out.println(map);
-
     }
 }
