@@ -1,7 +1,7 @@
 package ua.epamcourses.natalia_markova.homework.task08.subtask05.model;
 
+import ua.epamcourses.natalia_markova.homework.task08.subtask05.service.GameException;
 import ua.epamcourses.natalia_markova.homework.task08.subtask05.service.GameService;
-import ua.epamcourses.natalia_markova.homework.task08.subtask05.service.ShipService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +40,7 @@ public class Field {
         this.ships = ships;
     }
 
-    public MoveResult getMoveResult(Cell cell) throws GameException {
+    public MoveResult getMoveResult(Cell cell) {
         int x = cell.getX();
         int y = cell.getY();
         cells[x][y].setIsHit(true);
@@ -59,7 +59,7 @@ public class Field {
         }
     }
 
-    public Ship markCell(Cell cell, MoveResult result) throws GameException{
+    public Ship markCell(Cell cell, MoveResult result) {
 
         int x = cell.getX();
         int y = cell.getY();
@@ -120,7 +120,7 @@ public class Field {
         return ship;
     }
 
-    private int getShipIndex(Ship ship) throws GameException{
+    private int getShipIndex(Ship ship) {
         for (int i = 0; i < ships.length; i++) {
             Ship sh = ships[i];
             if (sh == ship) {
@@ -130,11 +130,11 @@ public class Field {
         throw new GameException("The ship " + ship.toString() + " + is not found in ships");
     }
 
-    private void setShip(Ship ship) throws GameException{
+    private void setShip(Ship ship) {
         setShip(ships, ship);
     }
 
-    private void setShip(Ship[] ships, Ship ship) throws GameException{
+    private void setShip(Ship[] ships, Ship ship) {
         for (int i = 0; i < ships.length; i++) {
             if (ships[i] == null) {
                 ships[i] = ship;
@@ -187,7 +187,7 @@ public class Field {
         return (getPossibleShipSize() == 0 ? false : true);
     }
 
-    public Cell getUnHitCell(Ship hitShip) throws GameException {
+    public Cell getUnHitCell(Ship hitShip) {
         if (hitShip != null) {
             List<Cell> possibleCells = new ArrayList<>();
             for (Cell hitCell : hitShip.getCells()) {

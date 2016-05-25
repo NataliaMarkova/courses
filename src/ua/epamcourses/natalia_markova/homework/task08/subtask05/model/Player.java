@@ -1,7 +1,9 @@
 package ua.epamcourses.natalia_markova.homework.task08.subtask05.model;
 
 import ua.epamcourses.natalia_markova.homework.task08.subtask05.service.FieldInitializer;
+import ua.epamcourses.natalia_markova.homework.task08.subtask05.service.GameException;
 import ua.epamcourses.natalia_markova.homework.task08.subtask05.service.RandomFieldInitializer;
+import ua.epamcourses.natalia_markova.homework.task08.subtask05.service.ShipInitializingException;
 
 import java.util.Arrays;
 
@@ -30,13 +32,13 @@ public abstract class Player {
         return otherField;
     }
 
-    public abstract Cell move() throws GameException;
+    public abstract Cell move();
 
-    public MoveResult getMoveResult(Cell cell) throws GameException {
+    public MoveResult getMoveResult(Cell cell) {
         return field.getMoveResult(cell);
     }
 
-    public void processResult(Cell cell, MoveResult result) throws GameException {
+    public void processResult(Cell cell, MoveResult result) {
         Ship ship = otherField.markCell(cell, result);
         if (result == MoveResult.SHOT) {
             lastHitShip = ship;

@@ -1,9 +1,9 @@
-package ua.epamcourses.natalia_markova.homework.task08.subtask05.model;
+package ua.epamcourses.natalia_markova.homework.task08.subtask05.service;
 
 /**
  * Created by natalia_markova on 13.05.2016.
  */
-public class ShipInitializingException extends Exception {
+public class ShipInitializingException extends RuntimeException {
     public ShipInitializingException() {
     }
 

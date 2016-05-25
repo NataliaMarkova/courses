@@ -2,11 +2,9 @@ package ua.epamcourses.natalia_markova.homework.task08.subtask05.service;
 
 import ua.epamcourses.natalia_markova.homework.task08.subtask05.model.Cell;
 import ua.epamcourses.natalia_markova.homework.task08.subtask05.model.Ship;
-import ua.epamcourses.natalia_markova.homework.task08.subtask05.model.ShipInitializingException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by natalia_markova on 13.05.2016.

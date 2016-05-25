@@ -1,9 +1,9 @@
-package ua.epamcourses.natalia_markova.homework.task08.subtask05.model;
+package ua.epamcourses.natalia_markova.homework.task08.subtask05.service;
 
 /**
  * Created by natalia_markovs on 13.05.2016.
  */
-public class GameException extends Exception {
+public class GameException extends RuntimeException {
     public GameException() {
     }
 
@@ -13,5 +13,9 @@ public class GameException extends Exception {
 
     public GameException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public GameException(Throwable cause) {
+        super(cause);
     }
 }
