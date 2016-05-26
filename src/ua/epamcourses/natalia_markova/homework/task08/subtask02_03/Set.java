@@ -1,4 +1,4 @@
-package ua.epamcourses.natalia_markova.homework.task08.subtask02;
+package ua.epamcourses.natalia_markova.homework.task08.subtask02_03;
 
 /**
  * Created by natalia_markova on 26.05.2016.
