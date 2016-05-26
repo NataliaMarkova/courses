@@ -12,7 +12,7 @@ public class HashTable<K,V> implements Map<K,V>{
     private Node<K,V>[] data;
     private int size;
 
-    private class Node<K,V> implements Map.Entry<K,V>{
+    private static class Node<K,V> implements Map.Entry<K,V>{
         private K key;
         private V value;
         private Node<K,V> next;
@@ -164,7 +164,7 @@ public class HashTable<K,V> implements Map<K,V>{
     }
 
     private int getKeyIndex(K key) {
-        int index = key.hashCode();
+        int index = (key == null ? 0 : key.hashCode());
         return index % bucketSize;
     }
 
