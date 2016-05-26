@@ -5,7 +5,7 @@ import ua.epamcourses.natalia_markova.homework.task08.subtask04.Map;
 /**
  * Created by natalia_markova on 26.05.2016.
  */
-public class RBTreeSet<E extends  Comparable> implements Set<E> {
+public class RBTreeSet<E extends  Comparable<E>> implements Set<E> {
 
     private Node<E> root;
     private int size;
@@ -389,7 +389,8 @@ public class RBTreeSet<E extends  Comparable> implements Set<E> {
     }
 
     public static void main(String[] args) {
-        Set<Integer> set = new RBTreeSet<>();
+        //Set<Integer> set = new RBTreeSet<>();
+        Set<Integer> set = new AVLTreeSet<>();
         System.out.println(set);
         for (int i = 0; i < 10; i++) {
             set.add(i);
@@ -397,16 +398,17 @@ public class RBTreeSet<E extends  Comparable> implements Set<E> {
                 set.add(-i);
             }
             System.out.println(set);
+            System.out.println(set.size());
         }
         System.out.println("contains(8) == " + set.contains(8));
         System.out.println("contains(100) == " + set.contains(100));
         System.out.println("contains(-10) == " + set.contains(-10));
-        set.remove(100);
-        System.out.println(set);
-        for (int i = 0; i < 10; i++) {
-            set.remove(i);
-            System.out.println(set);
-        }
+//        set.remove(100);
+//        System.out.println(set);
+//        for (int i = 0; i < 10; i++) {
+//            set.remove(i);
+//            System.out.println(set);
+//        }
         set.clear();
         System.out.println(set);
 
