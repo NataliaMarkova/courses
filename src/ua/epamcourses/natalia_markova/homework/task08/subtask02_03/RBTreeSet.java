@@ -2,6 +2,8 @@ package ua.epamcourses.natalia_markova.homework.task08.subtask02_03;
 
 import ua.epamcourses.natalia_markova.homework.task08.subtask04.Map;
 
+import java.util.Random;
+
 /**
  * Created by natalia_markova on 26.05.2016.
  */
@@ -253,7 +255,6 @@ public class RBTreeSet<E extends  Comparable<E>> implements Set<E> {
     }
 
     private void convertOnDelete(Node<E> node) {
-        // node is always black
         if (node.parent == null) {
             return;
         }
@@ -261,7 +262,7 @@ public class RBTreeSet<E extends  Comparable<E>> implements Set<E> {
         if (sibling == null) {
             return;
         }
-        // as node is black sibling can't be null
+
         if (sibling.color == RED) {
             node.parent.color = RED;
             sibling.color = BLACK;
@@ -393,22 +394,20 @@ public class RBTreeSet<E extends  Comparable<E>> implements Set<E> {
         Set<Integer> set = new AVLTreeSet<>();
         System.out.println(set);
         for (int i = 0; i < 10; i++) {
-            set.add(i);
-            if (i%2 == 0) {
-                set.add(-i);
+            if (set.add((int)(Math.random() * 100))) {
+                System.out.println(set);
             }
-            System.out.println(set);
-            System.out.println(set.size());
         }
         System.out.println("contains(8) == " + set.contains(8));
         System.out.println("contains(100) == " + set.contains(100));
         System.out.println("contains(-10) == " + set.contains(-10));
-//        set.remove(100);
-//        System.out.println(set);
-//        for (int i = 0; i < 10; i++) {
-//            set.remove(i);
-//            System.out.println(set);
-//        }
+        set.remove(100);
+        System.out.println(set);
+        for (int i = 100; i >= 0; i--) {
+            if (set.remove((int)(Math.random() * 100))) {
+                System.out.println(set);
+            }
+        }
         set.clear();
         System.out.println(set);
 

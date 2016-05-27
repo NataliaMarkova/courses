@@ -139,6 +139,53 @@ public class AVLTreeSet<E extends Comparable<E>> implements Set<E> {
         if (node == null) {
             return false;
         }
+        if (node.right == null && node.left == null) {
+            // no children
+            if (node.parent == null) {
+                // node == root
+                root = null;
+            }
+            else if (node.parent.right == node) {
+                node.parent.right = null;
+            }
+            else if (node.parent.left == node) {
+                node.parent.left = null;
+            }
+        } else if (node.right != null && node.left != null) {
+            // node has both children
+            // search for the vey left node of the right node
+            Node<E> veryLeftNode = node.right;
+            while (veryLeftNode.left != null) {
+                veryLeftNode = veryLeftNode.left;
+            }
+            // move value
+            node.value = veryLeftNode.value;
+            remove(veryLeftNode);
+            return true;
+        } else {
+            // has only one child
+            // change node to child
+            Node<E> child = null;
+            if (node.left != null) {
+                child = node.left;
+            } else {
+                child = node.right;
+            }
+            if (node.parent == null) {
+                // node == root
+                root = child;
+            }
+            else if (node.parent.right == node) {
+                node.parent.right = child;
+            }
+            else if (node.parent.left == node) {
+                node.parent.left = child;
+            }
+            child.parent = node.parent;
+
+        }
+        rebalanceTree(node.parent);
+        size--;
         return true;
     }
 
@@ -173,6 +220,21 @@ public class AVLTreeSet<E extends Comparable<E>> implements Set<E> {
         if (node.right != null) {
             toString(node.right, str);
         }
+    }
+
+    private void rebalanceTree(Node<E> node) {
+        if (node == null) {
+            return;
+        }
+        node.height = Math.max(getHeight(node.left), getHeight(node.right));
+        int balance = getBalance(node); // left - right
+
+        if (balance > 1) {
+            node = rotateRight(node);
+        } else if (balance < -1) {
+            node = rotateLeft(node);
+        }
+        rebalanceTree(node.parent);
     }
 
     private int getHeight(Node<E> node) {
