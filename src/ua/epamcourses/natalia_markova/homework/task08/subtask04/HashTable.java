@@ -8,9 +8,10 @@ import java.util.*;
  */
 public class HashTable<K,V> implements Map<K,V>{
 
-    private int bucketSize = 10;
     private Node<K,V>[] data;
     private int size;
+
+    private static final float RATIO = 0.75f;
 
     private static class Node<K,V> implements Map.Entry<K,V>{
         private K key;
@@ -35,7 +36,7 @@ public class HashTable<K,V> implements Map<K,V>{
     }
 
     public HashTable() {
-        data = (Node<K,V>[]) new Node[bucketSize];
+        data = (Node<K,V>[]) new Node[10];
     }
 
     @Override
@@ -83,6 +84,10 @@ public class HashTable<K,V> implements Map<K,V>{
             node = node.next;
         }
         if (oldValue == null) {
+            int maxSize = (int) (data.length * RATIO);
+            if (maxSize < size) {
+                resize();
+            }
             Node<K, V> newNode = new Node<K, V>(key, value, null);
             if (prevNode != null) {
                 prevNode.next = newNode;
@@ -122,7 +127,7 @@ public class HashTable<K,V> implements Map<K,V>{
 
     @Override
     public void clear() {
-        data = (Node<K,V>[]) new Node[this.bucketSize];
+        data = (Node<K,V>[]) new Node[data.length];
         size = 0;
     }
 
@@ -165,7 +170,7 @@ public class HashTable<K,V> implements Map<K,V>{
 
     private int getKeyIndex(K key) {
         int index = (key == null ? 0 : key.hashCode());
-        return index % bucketSize;
+        return Math.abs(index % data.length);
     }
 
     private Node<K,V> getNodeByKey(Node<K,V> firstNode, K key) {
@@ -181,9 +186,22 @@ public class HashTable<K,V> implements Map<K,V>{
         return null;
     }
 
+    private void resize() {
+        int newLength = data.length * 2;
+        Node<K,V>[] oldData = data;
+        data = (Node<K,V>[]) new Node[newLength];
+        size = 0;
+        for (Node<K,V> oldNode : oldData) {
+            while (oldNode != null) {
+                put(oldNode.key, oldNode.value);
+                oldNode = oldNode.next;
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Map<Integer,Integer> map = new HashTable<>();
-        for (int i = 0; i < 25; i++){
+        for (int i = 0; i < 100; i++){
             map.put(i, i);
         }
         System.out.println(map);
