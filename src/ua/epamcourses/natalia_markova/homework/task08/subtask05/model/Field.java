@@ -16,7 +16,9 @@ public class Field {
     private Ship[] ships = new Ship[10];
 
     // for other player field
-    private Ship[] ship4Decks= new Ship[1];
+    private Ship[] shipsHit = new Ship[10];
+    private Ship lastHitShip;
+    private Ship[] ship4Decks = new Ship[1];
     private Ship[] ship3Decks = new Ship[2];
     private Ship[] ship2Decks = new Ship[3];
     private Ship[] ship1Deck = new Ship[4];
@@ -41,39 +43,43 @@ public class Field {
     }
 
     public MoveResult getMoveResult(Cell cell) {
+        MoveResult result = null;
         int x = cell.getX();
         int y = cell.getY();
         cells[x][y].setIsHit(true);
         if (!cells[x][y].isPartOfAShip()) {
-            return MoveResult.MISS;
-        }
-        Ship ship = getShipByCell(cell);
-        if (ship == null) {
-            throw new GameException("No ship found by cell: " + cell + System.getProperty("line.separator") + "ships: " + Arrays.toString(ships));
-        }
-        if (ship.isDrowned()) {
-            markCellsAsHit(ship);
-            return MoveResult.DROWNED;
+            result = MoveResult.MISS;
         } else {
-            return MoveResult.SHOT;
+            Ship ship = getShipByCell(ships, cell);
+            if (ship == null) {
+                throw new GameException("No ship found by cell: " + cell + System.getProperty("line.separator") + "ships: " + Arrays.toString(ships));
+            }
+            if (ship.isDrowned()) {
+                markCellsAsHit(ship);
+                result = MoveResult.DROWNED;
+            } else {
+                result = MoveResult.SHOT;
+            }
         }
+        processResult(cell, result);
+        return result;
     }
 
-    public Ship markCell(Cell cell, MoveResult result) {
+    private void processResult(Cell cell, MoveResult result) {
 
         int x = cell.getX();
         int y = cell.getY();
         Cell fieldCell = cells[x][y];
         fieldCell.setIsHit(true);
         if (result == MoveResult.MISS) {
-            return null;
+            return;
         }
         Ship ship = null;
         fieldCell.setIsPartOfAShip(true);
         for (int i = x - 1; i <= x + 1; i++ ) {
             for (int j = y - 1; j <= y + 1; j++ ) {
                 if (GameService.cellIsOk(i, j)) {
-                    ship = getShipByCell(new Cell(i, j));
+                    ship = getShipByCell(shipsHit, new Cell(i, j));
                     if (ship != null) {
                         break;
                     }
@@ -90,11 +96,9 @@ public class Field {
                 throw new GameException("All ships are drowned");
             }
             ship = new Ship(size);
-            ship.setCell(fieldCell);
-            setShip(ship);
-        } else {
-            ship.setCell(fieldCell);
+            setShip(shipsHit, ship);
         }
+        ship.setCell(fieldCell);
         if (result == MoveResult.DROWNED) {
             int index = getShipIndex(ship);
             int size = ship.getSize();
@@ -105,7 +109,7 @@ public class Field {
                 }
                 theShip.setCell(shipCell);
             }
-            ships[index] = theShip;
+            shipsHit[index] = theShip;
             if (size == 1) {
                 setShip(ship1Deck, theShip);
             } else if (size == 2) {
@@ -117,21 +121,21 @@ public class Field {
             }
             markCellsAsHit(theShip);
         }
-        return ship;
+        if (result == MoveResult.SHOT) {
+            lastHitShip = ship;
+        } else if (result == MoveResult.DROWNED) {
+            lastHitShip = null;
+        }
     }
 
     private int getShipIndex(Ship ship) {
-        for (int i = 0; i < ships.length; i++) {
-            Ship sh = ships[i];
+        for (int i = 0; i < shipsHit.length; i++) {
+            Ship sh = shipsHit[i];
             if (sh == ship) {
                 return i;
             }
         }
-        throw new GameException("The ship " + ship.toString() + " + is not found in ships");
-    }
-
-    private void setShip(Ship ship) {
-        setShip(ships, ship);
+        throw new GameException("The ship " + ship.toString() + " + is not found in hit ships");
     }
 
     private void setShip(Ship[] ships, Ship ship) {
@@ -144,7 +148,7 @@ public class Field {
         throw new GameException("Couldn't set a ship!");
     }
 
-    private Ship getShipByCell(Cell cell) {
+    private Ship getShipByCell(Ship[] ships, Cell cell) {
         for (Ship ship : ships) {
             if (ship!= null && ship.hasCell(cell)) {
                 return ship;
@@ -187,10 +191,10 @@ public class Field {
         return (getPossibleShipSize() == 0 ? false : true);
     }
 
-    public Cell getUnHitCell(Ship hitShip) {
-        if (hitShip != null) {
+    public Cell getUnHitCell() {
+        if (lastHitShip != null) {
             List<Cell> possibleCells = new ArrayList<>();
-            for (Cell hitCell : hitShip.getCells()) {
+            for (Cell hitCell : lastHitShip.getCells()) {
                 if (hitCell == null) {
                     break;
                 }
@@ -224,6 +228,27 @@ public class Field {
             }
             int index = GameService.getRandomNumber(0, possibleCells.size() - 1);
             return possibleCells.get(index);
+        }
+    }
+
+    public void viewCell(int x, int y, boolean viewShips) {
+        Cell cell = cells[x][y];
+        if (!cell.isHit() && !cell.isPartOfAShip()) {
+            // empty cell
+            System.out.print("\t");
+        } else if (!cell.isHit() && cell.isPartOfAShip()) {
+            // part of a ship
+            if (viewShips) {
+                System.out.print("0\t");
+            } else {
+                System.out.print("\t");
+            }
+        } else if (cell.isHit() && cell.isPartOfAShip()) {
+            // part of a ship and hit
+            System.out.print("X\t");
+        } else {
+            // empty and hit
+            System.out.print("-\t");
         }
     }
 

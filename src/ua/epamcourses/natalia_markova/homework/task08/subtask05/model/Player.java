@@ -15,13 +15,17 @@ public abstract class Player {
     private String name;
     private Field field;
     private Field otherField;
-    private Ship lastHitShip;
 
+    public Player() {
 
-    public Player() throws ShipInitializingException {
-        FieldInitializer initializer = new RandomFieldInitializer();
-        field = initializer.initializeField();
-        otherField = initializer.initializeEmptyField();
+    }
+
+    public void setField(Field field) {
+        this.field = field;
+    }
+
+    public void setOtherField(Field otherField) {
+        this.otherField = otherField;
     }
 
     public Field getField() {
@@ -32,22 +36,17 @@ public abstract class Player {
         return otherField;
     }
 
-    public abstract Cell move();
+    protected abstract Cell move();
 
-    public MoveResult getMoveResult(Cell cell) {
-        return field.getMoveResult(cell);
-    }
-
-    public void processResult(Cell cell, MoveResult result) {
-        Ship ship = otherField.markCell(cell, result);
-        if (result == MoveResult.SHOT) {
-            lastHitShip = ship;
-        } else if (result == MoveResult.DROWNED) {
-            lastHitShip = null;
-        }
+    public MoveResult getMoveResult() {
+        return otherField.getMoveResult(move());
     }
 
     public void viewFields() {
+        viewFields(false);
+    }
+
+    public void viewFields(boolean viewBothFieldsShips) {
         // first line
         for (int i = 0; i < 10; i++) {
             System.out.print((i + 1) + "\t");
@@ -62,31 +61,15 @@ public abstract class Player {
         String letters = "abcdefghij";
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                viewCell(field.getCells()[i][j]);
+                field.viewCell(i, j, true);
             }
             System.out.print(letters.charAt(i) + "\t");
             for (int j = 0; j < 10; j++) {
-                viewCell(otherField.getCells()[i][j]);
+                otherField.viewCell(i, j, viewBothFieldsShips);
             }
             System.out.println();
         }
         System.out.println();
-    }
-
-    private void viewCell(Cell cell) {
-        if (!cell.isHit() && !cell.isPartOfAShip()) {
-            // empty cell
-            System.out.print("\t");
-        } else if (!cell.isHit() && cell.isPartOfAShip()) {
-            // part of a ship
-            System.out.print("0\t");
-        } else if (cell.isHit() && cell.isPartOfAShip()) {
-            // part of a ship and hit
-            System.out.print("X\t");
-        } else {
-            // empty and hit
-            System.out.print("-\t");
-        }
     }
 
     public boolean won() {
@@ -99,14 +82,6 @@ public abstract class Player {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Ship getLastHitShip() {
-        return lastHitShip;
-    }
-
-    public void setLastHitShip(Ship lastHitShip) {
-        this.lastHitShip = lastHitShip;
     }
 
     @Override

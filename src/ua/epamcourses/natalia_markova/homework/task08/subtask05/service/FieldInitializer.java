@@ -7,5 +7,4 @@ import ua.epamcourses.natalia_markova.homework.task08.subtask05.model.Field;
  */
 public interface FieldInitializer {
     Field initializeField() throws ShipInitializingException;
-    Field initializeEmptyField();
 }
