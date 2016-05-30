@@ -20,7 +20,7 @@ public class PriorityQueue<E> {
 
     public boolean add(E element) {
         if (element == null) {
-            throw new IllegalArgumentException();
+            throw new NullPointerException();
         }
         if (data[0] == null) {
             data[0] = element;
@@ -77,6 +77,9 @@ public class PriorityQueue<E> {
     }
 
     public boolean remove(E element) {
+        if (element == null) {
+            throw new NullPointerException();
+        }
         int index = getIndex(element);
         if (index == -1) {
             return false;
@@ -179,7 +182,7 @@ public class PriorityQueue<E> {
     }
 
     private void resize() {
-        data = Arrays.copyOf(data,  data.length<<1);
+        data = Arrays.copyOf(data,  (data.length<<1) + 1);
     }
 
     @Override
