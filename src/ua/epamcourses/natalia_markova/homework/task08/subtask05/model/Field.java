@@ -46,6 +46,9 @@ public class Field {
         MoveResult result = null;
         int x = cell.getX();
         int y = cell.getY();
+        if (cells[x][y].isHit()) {
+            return MoveResult.ALREADY_SHOT;
+        }
         cells[x][y].setIsHit(true);
         if (!cells[x][y].isPartOfAShip()) {
             result = MoveResult.MISS;
@@ -55,7 +58,6 @@ public class Field {
                 throw new GameException("No ship found by cell: " + cell + System.getProperty("line.separator") + "ships: " + Arrays.toString(ships));
             }
             if (ship.isDrowned()) {
-                markCellsAsHit(ship);
                 result = MoveResult.DROWNED;
             } else {
                 result = MoveResult.SHOT;
