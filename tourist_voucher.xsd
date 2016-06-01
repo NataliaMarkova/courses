@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="TouristVoucher" type="TouristVoucherType"/>
+
+	<xs:complexType name="TouristVoucherType">
+		<xs:sequence>
+			<xs:element name="ROW" minOccurs="1" maxOccurs="unbounded" type="RowType"/>
+		</xs:sequence>
+	</xs:complexType> 	
+
+	<xs:complexType name="RowType" mixed="true">
+		<xs:sequence>
+			<xs:element name="Type">
+				<xs:complexType> 
+					<xs:attribute name="id" type="xs:nonNegativeInteger" use="required" />
+					<xs:attribute name="value" type="VoucherType"/>
+				</xs:complexType> 
+			</xs:element>
+			<xs:element name="Country">
+				<xs:complexType> 
+					<xs:attribute name="id" type="xs:nonNegativeInteger" use="required" />
+					<xs:attribute name="value" type="CountryType" use="required"/>
+				</xs:complexType> 
+			</xs:element>
+			<xs:element name="Duration">
+				<xs:complexType> 
+					<xs:attribute name="days" type="DurationType"  use="required" />
+					<xs:attribute name="nights" type="DurationType" use="required" />
+				</xs:complexType> 
+			</xs:element>
+			<xs:element name="Transport">
+				<xs:complexType> 
+					<xs:attribute name="id" type="xs:nonNegativeInteger" use="required" />
+					<xs:attribute name="value" type="TransportType" use="required" />
+				</xs:complexType> 
+			</xs:element>
+			<xs:element name="HotelCharastiristics" type="HotelCharastiristicsType" />
+			<xs:element name="Cost">
+				<xs:complexType>  
+					<xs:attribute name="amount" type="xs:decimal" use="required"/>
+				</xs:complexType> 
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:nonNegativeInteger" use="required" />	
+	</xs:complexType>
+
+	<xs:simpleType name="VoucherType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Leisure"/>
+			<xs:enumeration value="Treetment"/>
+			<xs:enumeration value="Pilgrimage"/>
+			<xs:enumeration value="Excursions"/>
+			<xs:enumeration value="Shop tour"/>
+		</xs:restriction>
+	</xs:simpleType> 
+
+	<xs:simpleType name="TransportType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Avia"/>
+			<xs:enumeration value="Train"/>
+			<xs:enumeration value="Bus"/>
+			<xs:enumeration value="Ship"/>
+		</xs:restriction>
+	</xs:simpleType> 
+
+	<xs:simpleType name="CountryType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[a-zA-Z ]+"/>
+		</xs:restriction>
+	</xs:simpleType> 
+
+	<xs:simpleType name="DurationType">
+		<xs:restriction base="xs:nonNegativeInteger">
+	    		<xs:maxInclusive value="50"/>
+		</xs:restriction>
+	</xs:simpleType> 
+
+	<xs:complexType name="HotelCharastiristicsType">
+		<xs:sequence>
+			<xs:element name="HotelCharastiristic" minOccurs="0" maxOccurs="unbounded">
+				<xs:complexType> 
+					<xs:attribute name="name" type="HotelCharastiristicID" use="required" />
+					<xs:attribute name="value" type="xs:string" use="required" />
+				</xs:complexType> 
+			</xs:element>
+			<xs:element name="Facilities">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Facility" minOccurs="0" maxOccurs="unbounded">
+							<xs:complexType> 
+								<xs:attribute name="id" type="xs:nonNegativeInteger" use="optional" />
+								<xs:attribute name="value" type="xs:string" use="required" />
+							</xs:complexType> 
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType> 
+
+	<xs:simpleType name="HotelCharastiristicID">
+		<xs:restriction base="xs:ID">
+			<xs:enumeration value="Type"/>
+			<xs:enumeration value="Nutrition"/>
+			<xs:enumeration value="RoomType"/>
+		</xs:restriction>
+	</xs:simpleType> 	
+
+
+</xs:schema>

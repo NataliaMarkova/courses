@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<TouristVoucher>
+	<ROW id="1">
+		<Type id="1" value="Leisure" />
+		<Country id="1" value="Spain" />
+		<Duration days="7" nights="8" />
+		<Transport id="1" value="Avia"/>
+		<HotelCharastiristics>
+			<HotelCharastiristic name="Type" value="***" />
+			<HotelCharastiristic name="Nutrition" value="HB" />
+			<HotelCharastiristic name="RoomType" value="double" />
+			<Facilities>
+				<Facility id="1" value="Conditioner" />
+				<Facility id="2" value="TV" />
+			</Facilities>
+		</HotelCharastiristics>	
+		<Cost amount="1000.00"/>
+	</ROW>
+</TouristVoucher>
