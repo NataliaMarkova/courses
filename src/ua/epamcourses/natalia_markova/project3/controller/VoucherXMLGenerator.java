@@ -7,6 +7,6 @@ import java.util.Set;
 /**
  * Created by natalia_markova on 02.06.2016.
  */
-public interface XMLGenerator {
+public interface VoucherXMLGenerator {
     boolean generate(Set<TouristVoucher> vouchers, String xmlFileName);
 }

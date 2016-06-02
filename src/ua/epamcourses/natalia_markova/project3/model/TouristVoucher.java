@@ -97,4 +97,18 @@ public class TouristVoucher {
     public int hashCode() {
         return id;
     }
+
+    @Override
+    public String toString() {
+        return "TouristVoucher{" +
+                "id=" + id +
+                ", type=" + type +
+                ", transportType=" + transportType +
+                ", room=" + room +
+                ", days=" + days +
+                ", nights=" + nights +
+                ", price=" + price +
+                ", includes=" + includes +
+                '}';
+    }
 }

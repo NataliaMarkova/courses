@@ -79,5 +79,15 @@ public class Hotel {
         result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Hotel{" +
+                "name='" + name + '\'' +
+                ", country=" + country +
+                ", type='" + type + '\'' +
+                ", facilities=" + facilities +
+                '}';
+    }
 }
 

@@ -65,4 +65,13 @@ public class Room {
         result = 31 * result + (nutrition != null ? nutrition.hashCode() : 0);
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "hotel=" + hotel +
+                ", type='" + type + '\'' +
+                ", nutrition=" + nutrition +
+                '}';
+    }
 }

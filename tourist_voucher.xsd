@@ -38,9 +38,13 @@
 					</xs:sequence>
 					<xs:attribute name="name" type="xs:string" use="required" />
 					<xs:attribute name="type" type="HotelType" use="optional" />
-					<xs:attribute name="nutrition" type="NutritionType" use="required" />
-					<xs:attribute name="room" type="xs:string" use="required"/>
 				</xs:complexType> 
+			</xs:element>
+			<xs:element name="Room">
+				<xs:complexType>
+					<xs:attribute name="type" type="xs:string" use="required"/>
+					<xs:attribute name="nutrition" type="NutritionType" use="required" />
+				</xs:complexType>  
 			</xs:element>
 			<xs:element name="Cost">
 				<xs:complexType>

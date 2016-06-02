@@ -5,12 +5,13 @@
 		<Country>Spain</Country>
 		<Duration days="8" nights="7"/>
 		<Transport>Avia</Transport>
-		<Hotel name="Andalusian miracle" type="***" nutrition="HB" room="double (standart)">
+		<Hotel name="Andalusian miracle" type="***">
 			<Facilities>
 				<Facility>Conditioner</Facility>
 				<Facility>TV</Facility>
 			</Facilities>
 		</Hotel>	
+		<Room type="double (standart)" nutrition="HB" />
 		<Cost total="1000.00">
 			<Includes>Transfer</Includes>
 			<Includes>Flight</Includes>
@@ -23,7 +24,7 @@
 		<Country>Spain</Country>
 		<Duration days="10" nights="9"/>
 		<Transport>Avia</Transport>
-		<Hotel name="Bilbao miracle" type="***" nutrition="NM" room="4-bedrooms apartment">
+		<Hotel name="Bilbao miracle" type="***">
 			<Facilities>
 				<Facility>Conditioner</Facility>
 				<Facility>TV</Facility>
@@ -31,6 +32,7 @@
 				<Facility>Swimming pool</Facility>
 			</Facilities>
 		</Hotel>	
+		<Room type="4-bedrooms apartment" nutrition="NM" />
 		<Cost total="3000.00">
 			<Includes>Flight</Includes>
 			<Includes>Accomodation</Includes>
