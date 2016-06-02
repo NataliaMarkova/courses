@@ -1,4 +1,4 @@
-package ua.epamcourses.natalia_markova.project3.controller.sax;
+package ua.epamcourses.natalia_markova.project3.controller;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

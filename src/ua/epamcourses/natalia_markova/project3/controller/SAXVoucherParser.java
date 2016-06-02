@@ -1,7 +1,8 @@
-package ua.epamcourses.natalia_markova.project3.controller.sax;
+package ua.epamcourses.natalia_markova.project3.controller;
 
 import org.xml.sax.SAXException;
-import ua.epamcourses.natalia_markova.project3.controller.VoucherXMLOperator;
+import ua.epamcourses.natalia_markova.project3.controller.SAXParserHandler;
+import ua.epamcourses.natalia_markova.project3.controller.VoucherXMLParser;
 import ua.epamcourses.natalia_markova.project3.model.TouristVoucher;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,7 +15,7 @@ import java.util.Set;
 /**
  * Created by natalia_markova on 02.06.2016.
  */
-public class SAXVoucherParser extends VoucherXMLOperator {
+public class SAXVoucherParser implements VoucherXMLParser {
     @Override
     public Set<TouristVoucher> parse(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
 

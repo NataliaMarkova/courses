@@ -1,33 +1,28 @@
-package ua.epamcourses.natalia_markova.project3.controller.dom;
+package ua.epamcourses.natalia_markova.project3.controller;
 
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
-import ua.epamcourses.natalia_markova.project3.controller.VoucherXMLOperator;
+import ua.epamcourses.natalia_markova.project3.controller.VoucherXMLParser;
 import ua.epamcourses.natalia_markova.project3.model.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by yack on 02.06.2016.
  */
-public class DOMVoucherParser extends VoucherXMLOperator {
-
-    private Set<TouristVoucher> vouchers;
+public class DOMVoucherParser implements VoucherXMLParser {
 
     public DOMVoucherParser() {
         super();
     }
 
     @Override
-    public Set<TouristVoucher> parse(String xmlFileName) throws ParserConfigurationException, SAXException, IOException {
+    public Set<TouristVoucher> parse(String xmlFileName) throws Exception {
 
-        vouchers =  new HashSet<>();
+        Set<TouristVoucher> vouchers =  new HashSet<>();
 
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
