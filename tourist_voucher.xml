@@ -1,19 +1,40 @@
 <?xml version="1.0" encoding="windows-1251"?>
-<TouristVoucher>
-	<ROW id="1">
-		<Type id="1" value="Leisure" />
-		<Country id="1" value="Spain" />
-		<Duration days="7" nights="8" />
-		<Transport id="1" value="Avia"/>
-		<HotelCharastiristics>
-			<HotelCharastiristic name="Type" value="***" />
-			<HotelCharastiristic name="Nutrition" value="HB" />
-			<HotelCharastiristic name="RoomType" value="double" />
+<vouchers>
+	<voucher id="1">
+		<Type>Leisure</Type>
+		<Country>Spain</Country>
+		<Duration days="8" nights="7"/>
+		<Transport>Avia</Transport>
+		<Hotel name="Andalusian miracle" type="***" nutrition="HB" room="double (standart)">
 			<Facilities>
-				<Facility id="1" value="Conditioner" />
-				<Facility id="2" value="TV" />
+				<Facility>Conditioner</Facility>
+				<Facility>TV</Facility>
 			</Facilities>
-		</HotelCharastiristics>	
-		<Cost amount="1000.00"/>
-	</ROW>
-</TouristVoucher>
+		</Hotel>	
+		<Cost total="1000.00">
+			<Includes>Transfer</Includes>
+			<Includes>Flight</Includes>
+			<Includes>Accomodation</Includes>
+			<Includes>Nutrition</Includes>
+		</Cost>
+	</voucher>
+	<voucher id="2">
+		<Type>Leisure</Type>
+		<Country>Spain</Country>
+		<Duration days="10" nights="9"/>
+		<Transport>Avia</Transport>
+		<Hotel name="Bilbao miracle" type="***" nutrition="NM" room="4-bedrooms apartment">
+			<Facilities>
+				<Facility>Conditioner</Facility>
+				<Facility>TV</Facility>
+				<Facility>Washing machine</Facility>
+				<Facility>Swimming pool</Facility>
+			</Facilities>
+		</Hotel>	
+		<Cost total="3000.00">
+			<Includes>Flight</Includes>
+			<Includes>Accomodation</Includes>
+		</Cost>
+	</voucher>
+
+</vouchers>
