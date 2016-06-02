@@ -2,6 +2,9 @@ package ua.epamcourses.natalia_markova.project3.model;
 
 import com.sun.istack.internal.NotNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by natalia_markova on 02.06.2016.
  */
@@ -9,6 +12,7 @@ public class Room {
     private Hotel hotel;
     private String type;
     private NutritionType nutrition;
+    private Set<Facility> facilities = new HashSet<>();
 
     public Room(@NotNull Hotel hotel, @NotNull String type) {
         this.hotel = hotel;
@@ -45,6 +49,14 @@ public class Room {
         this.type = type;
     }
 
+    public Set<Facility> getFacilities() {
+        return facilities;
+    }
+
+    public boolean addFacility(Facility facility) {
+        return facilities.add(facility);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,6 +84,7 @@ public class Room {
                 "hotel=" + hotel +
                 ", type='" + type + '\'' +
                 ", nutrition=" + nutrition +
+                ", facilities=" + facilities +
                 '}';
     }
 }

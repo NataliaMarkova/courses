@@ -12,7 +12,6 @@ public class Hotel {
     private String name;
     private Country country;
     private String type;
-    private Set<Facility> facilities = new HashSet<>();
 
     public Hotel(@NotNull String name, @NotNull Country country) {
         this.name = name;
@@ -51,14 +50,6 @@ public class Hotel {
         }
     }
 
-    public Set<Facility> getFacilities() {
-        return facilities;
-    }
-
-    public boolean addFacility(Facility facility) {
-        return facilities.add(facility);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,7 +77,6 @@ public class Hotel {
                 "name='" + name + '\'' +
                 ", country=" + country +
                 ", type='" + type + '\'' +
-                ", facilities=" + facilities +
                 '}';
     }
 }

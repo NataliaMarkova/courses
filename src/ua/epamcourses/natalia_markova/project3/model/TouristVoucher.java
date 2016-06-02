@@ -2,6 +2,7 @@ package ua.epamcourses.natalia_markova.project3.model;
 
 import com.sun.istack.internal.NotNull;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +21,13 @@ public class TouristVoucher {
 
     public TouristVoucher(int id) {
         this.id = id;
+    }
+
+    public static class OrderById implements Comparator<TouristVoucher> {
+        @Override
+        public int compare(TouristVoucher o1, TouristVoucher o2) {
+            return o1.getId() - o2.getId();
+        }
     }
 
     public int getId() {

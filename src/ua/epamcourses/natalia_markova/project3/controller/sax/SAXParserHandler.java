@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class SAXParserHandler extends DefaultHandler {
 
-    private Set<TouristVoucher> vouchers = new HashSet<>();
+    private Set<TouristVoucher> vouchers;
 
     private TouristVoucher voucher;
     private Hotel hotel;
@@ -42,7 +42,9 @@ public class SAXParserHandler extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        if (qName.equalsIgnoreCase("voucher")) {
+        if (qName.equalsIgnoreCase("vouchers")) {
+            vouchers = new HashSet<>();
+        } else if (qName.equalsIgnoreCase("voucher")) {
             int id = Integer.parseInt(attributes.getValue("id"));
             voucher = new TouristVoucher(id);
             hotel = null;
@@ -94,7 +96,7 @@ public class SAXParserHandler extends DefaultHandler {
                 voucher.setTransportType(transportType);
             }
         } else if (qName.equalsIgnoreCase("facility")) {
-            hotel.addFacility(new Facility(value));
+            room.addFacility(new Facility(value));
         } else if (qName.equalsIgnoreCase("includes")) {
             voucher.addIncludes(value);
         }

@@ -1,6 +1,7 @@
 package ua.epamcourses.natalia_markova.project3.view;
 
 import org.xml.sax.SAXException;
+import ua.epamcourses.natalia_markova.project3.controller.dom.DOMVoucherParser;
 import ua.epamcourses.natalia_markova.project3.controller.sax.SAXVoucherParser;
 import ua.epamcourses.natalia_markova.project3.controller.VoucherXMLOperator;
 import ua.epamcourses.natalia_markova.project3.model.TouristVoucher;
@@ -24,15 +25,15 @@ public class Main {
 
         List<VoucherXMLOperator> operators = new ArrayList<>();
         operators.add(new SAXVoucherParser());
+        operators.add(new DOMVoucherParser());
 
         for (VoucherXMLOperator operator : operators) {
 
             System.out.println(operator.getClass().getSimpleName());
-            Set<TouristVoucher> vouchers = new HashSet<>();
 
             operator.validate(xmlFileName, xsdFileName);
             System.out.println("Validation: OK");
-            vouchers = operator.parse(xmlFileName);
+            Set<TouristVoucher> vouchers = operator.parse(xmlFileName);
 
             for (TouristVoucher voucher : vouchers) {
                 System.out.println(voucher);
