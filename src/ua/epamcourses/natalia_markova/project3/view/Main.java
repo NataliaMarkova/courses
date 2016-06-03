@@ -16,6 +16,8 @@ public class Main {
         String dir = System.getProperty("user.dir");
         String xmlFileName = dir + "\\tourist_voucher.xml";
         String xsdFileName = dir + "\\tourist_voucher.xsd";
+        String xslFileName = dir + "\\tourist_voucher.xsl";
+        String resultFileName = dir + "\\tourist_voucher.html";
 
         XMLValidator validator = new XMLValidator();
         validator.validate(xmlFileName, xsdFileName);
@@ -35,5 +37,9 @@ public class Main {
             }
             System.out.println();
         }
+
+        XMLTransformer transformer = new XMLTransformer();
+        transformer.transform(xmlFileName, xslFileName, resultFileName);
+        System.out.println("Transformation: OK");
     }
 }
