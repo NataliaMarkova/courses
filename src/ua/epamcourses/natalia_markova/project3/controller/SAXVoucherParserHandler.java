@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Created by natalia_markova on 01.06.2016.
  */
-public class SAXParserHandler extends DefaultHandler {
+public class SAXVoucherParserHandler extends DefaultHandler {
 
     private Set<TouristVoucher> vouchers;
 
@@ -22,7 +22,7 @@ public class SAXParserHandler extends DefaultHandler {
     private String value;
 
 
-    public SAXParserHandler() {
+    public SAXVoucherParserHandler() {
         super();
     }
 

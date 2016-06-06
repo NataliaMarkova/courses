@@ -1,8 +1,6 @@
 package ua.epamcourses.natalia_markova.project3.controller;
 
 import org.xml.sax.SAXException;
-import ua.epamcourses.natalia_markova.project3.controller.SAXParserHandler;
-import ua.epamcourses.natalia_markova.project3.controller.VoucherXMLParser;
 import ua.epamcourses.natalia_markova.project3.model.TouristVoucher;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,7 +20,7 @@ public class SAXVoucherParser implements VoucherXMLParser {
         File inputFile = new File(xmlFileName);
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser saxParser = factory.newSAXParser();
-        SAXParserHandler parserHandler = new SAXParserHandler();
+        SAXVoucherParserHandler parserHandler = new SAXVoucherParserHandler();
         saxParser.parse(inputFile, parserHandler);
 
         return parserHandler.getVouchers();
