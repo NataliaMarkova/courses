@@ -19,7 +19,6 @@ import java.util.Set;
  * Created by natalia_markova on 02.06.2016.
  */
 public class StAxVoucherParser implements VoucherXMLParser {
-
     @Override
     public Set<TouristVoucher> parse(String xmlFileName) throws Exception {
 
@@ -132,7 +131,6 @@ public class StAxVoucherParser implements VoucherXMLParser {
 
             }
         }
-
         return vouchers;
     }
 }

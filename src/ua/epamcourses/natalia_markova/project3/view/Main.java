@@ -27,7 +27,7 @@ public class Main {
         List<VoucherXMLParser> parsers = new ArrayList<>();
         parsers.add(new SAXVoucherParser());
         parsers.add(new DOMVoucherParser());
-        parsers.add(new StAXVoucherParser());
+        parsers.add(new StAxVoucherParser());
 
         for (VoucherXMLParser parser : parsers) {
             System.out.println(parser.getClass().getSimpleName());
