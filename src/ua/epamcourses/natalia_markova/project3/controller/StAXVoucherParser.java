@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * Created by natalia_markova on 02.06.2016.
  */
-public class StAXVoucherParserTest implements VoucherXMLParser {
+public class StAXVoucherParser implements VoucherXMLParser {
     @Override
     public Set<TouristVoucher> parse(String xmlFileName) throws Exception {
 
