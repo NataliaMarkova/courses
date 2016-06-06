@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="windows-1251"?>
-<?xml-stylesheet type="text/xsl" href="tourist_voucher.xsl"?>
 <vouchers>
 	<voucher id="1">
 		<Type>Leisure</Type>
@@ -36,7 +35,7 @@
 		</Room>
 		<Cost total="3000.00">
 			<Includes>Flight</Includes>
-			<Includes>Accomodation</Includes>
+			<Includes>Accommodation</Includes>
 		</Cost>
 	</voucher>
 </vouchers>
