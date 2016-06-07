@@ -1,41 +1,42 @@
 <?xml version="1.0" encoding="windows-1251"?>
-<vouchers>
-	<voucher id="1">
-		<Type>Leisure</Type>
-		<Country>Spain</Country>
-		<Duration days="8" nights="7"/>
-		<Transport>Avia</Transport>
-		<Hotel name="Andalusian miracle" type="***" />
-		<Room type="double (standart)" nutrition="HB">
-			<Facilities>
-				<Facility>Conditioner</Facility>
-				<Facility>TV</Facility>
-			</Facilities>
-		</Room> 
-		<Cost total="1000.00">
-			<Includes>Transfer</Includes>
-			<Includes>Flight</Includes>
-			<Includes>Accomodation</Includes>
-			<Includes>Nutrition</Includes>
-		</Cost>
-	</voucher>
-	<voucher id="2">
-		<Type>Leisure</Type>
-		<Country>Spain</Country>
-		<Duration days="10" nights="9"/>
-		<Transport>Avia</Transport>
-		<Hotel name="Bilbao miracle" type="***" />			
-		<Room type="4-bedrooms apartment" nutrition="NM" >
-			<Facilities>
-				<Facility>Conditioner</Facility>
-				<Facility>TV</Facility>
-				<Facility>Washing machine</Facility>
-				<Facility>Swimming pool</Facility>
-			</Facilities>
-		</Room>
-		<Cost total="3000.00">
-			<Includes>Flight</Includes>
-			<Includes>Accommodation</Includes>
-		</Cost>
-	</voucher>
-</vouchers>
+
+<vch:vouchers xmlns:vch="http://www.markova.kiev.ua/epam_courses/project3">
+	<vch:voucher id="1">
+		<vch:Type>Leisure</vch:Type>
+		<vch:Country>Spain</vch:Country>
+		<vch:Duration days="8" nights="7"/>
+		<vch:Transport>Avia</vch:Transport>
+		<vch:Hotel name="Andalusian miracle" type="***" />
+		<vch:Room type="double (standart)" nutrition="HB">
+			<vch:Facilities>
+				<vch:Facility>Conditioner</vch:Facility>
+				<vch:Facility>TV</vch:Facility>
+			</vch:Facilities>
+		</vch:Room> 
+		<vch:Cost total="1000.00">
+			<vch:Includes>Transfer</vch:Includes>
+			<vch:Includes>Flight</vch:Includes>
+			<vch:Includes>Accomodation</vch:Includes>
+			<vch:Includes>Nutrition</vch:Includes>
+		</vch:Cost>
+	</vch:voucher>
+	<vch:voucher id="2">
+		<vch:Type>Leisure</vch:Type>
+		<vch:Country>Spain</vch:Country>
+		<vch:Duration days="10" nights="9"/>
+		<vch:Transport>Avia</vch:Transport>
+		<vch:Hotel name="Bilbao miracle" type="***" />			
+		<vch:Room type="4-bedrooms apartment" nutrition="NM" >
+			<vch:Facilities>
+				<vch:Facility>Conditioner</vch:Facility>
+				<vch:Facility>TV</vch:Facility>
+				<vch:Facility>Washing machine</vch:Facility>
+				<vch:Facility>Swimming pool</vch:Facility>
+			</vch:Facilities>
+		</vch:Room>
+		<vch:Cost total="3000.00">
+			<vch:Includes>Flight</vch:Includes>
+			<vch:Includes>Accommodation</vch:Includes>
+		</vch:Cost>
+	</vch:voucher>
+</vch:vouchers>

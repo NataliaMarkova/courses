@@ -1,10 +1,15 @@
 <?xml version="1.0"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-	<xs:element name="vouchers" type="VouchersType"/>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	targetNamespace="http://www.markova.kiev.ua/epam_courses/project3"
+	xmlns:vch="http://www.markova.kiev.ua/epam_courses/project3"
+	elementFormDefault="qualified">
+
+
+	<xs:element name="vouchers" type="vch:VouchersType"/>
 
 	<xs:complexType name="VouchersType">
 		<xs:sequence>
-			<xs:element name="voucher" minOccurs="1" maxOccurs="unbounded" type="RowType">
+			<xs:element name="voucher" minOccurs="1" maxOccurs="unbounded" type="vch:RowType">
 				<xs:unique name="VoucherID">
 			        	<xs:selector xpath="voucher"/>
 				        <xs:field xpath="@id" />
@@ -16,19 +21,19 @@
 
 	<xs:complexType name="RowType" mixed="true">
 		<xs:sequence>
-			<xs:element name="Type" type="VoucherType" />
-			<xs:element name="Country" type="CountryType" />
+			<xs:element name="Type" type="vch:VoucherType" />
+			<xs:element name="Country" type="vch:CountryType" />
 			<xs:element name="Duration">
 				<xs:complexType> 
-					<xs:attribute name="days" type="DurationType"  use="required" />
-					<xs:attribute name="nights" type="DurationType" use="required" />
+					<xs:attribute name="days" type="vch:DurationType"  use="required" />
+					<xs:attribute name="nights" type="vch:DurationType" use="required" />
 				</xs:complexType> 
 			</xs:element>
-			<xs:element name="Transport" type="TransportType" />
+			<xs:element name="Transport" type="vch:TransportType" />
 			<xs:element name="Hotel">
 				<xs:complexType>  					
 					<xs:attribute name="name" type="xs:string" use="required" />
-					<xs:attribute name="type" type="HotelType" use="optional" />
+					<xs:attribute name="type" type="vch:HotelType" use="optional" />
 				</xs:complexType> 
 			</xs:element>
 			<xs:element name="Room">
@@ -43,7 +48,7 @@
 						</xs:element>
 					</xs:sequence>
 					<xs:attribute name="type" type="xs:string" use="required"/>
-					<xs:attribute name="nutrition" type="NutritionType" use="required" />
+					<xs:attribute name="nutrition" type="vch:NutritionType" use="required" />
 				</xs:complexType>  
 			</xs:element>
 			<xs:element name="Cost">
@@ -110,6 +115,5 @@
 			<xs:enumeration value="UAI"/>
 		</xs:restriction>
 	</xs:simpleType> 
-
 
 </xs:schema>

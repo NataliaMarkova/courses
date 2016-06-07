@@ -42,28 +42,28 @@ public class SAXVoucherParserHandler extends DefaultHandler {
 
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-        if (qName.equalsIgnoreCase("vouchers")) {
+        if (qName.equalsIgnoreCase("vch:vouchers")) {
             vouchers = new HashSet<>();
-        } else if (qName.equalsIgnoreCase("voucher")) {
+        } else if (qName.equalsIgnoreCase("vch:voucher")) {
             int id = Integer.parseInt(attributes.getValue("id"));
             voucher = new TouristVoucher(id);
             hotel = null;
             room = null;
             country = null;
             value = null;
-        } else if (qName.equalsIgnoreCase("duration")) {
+        } else if (qName.equalsIgnoreCase("vch:duration")) {
             int days = Integer.parseInt(attributes.getValue("days"));
             int nights = Integer.parseInt(attributes.getValue("nights"));
             voucher.setDays(days);
             voucher.setNights(nights);
-        } else if (qName.equalsIgnoreCase("hotel")) {
+        } else if (qName.equalsIgnoreCase("vch:hotel")) {
             String name = attributes.getValue("name");
             String type = attributes.getValue("type");
             hotel = new Hotel(name, country);
             if (type != null) {
                 hotel.setType(type);
             }
-        } else if (qName.equalsIgnoreCase("room")) {
+        } else if (qName.equalsIgnoreCase("vch:room")) {
             String type = attributes.getValue("type");
             String nutrition = attributes.getValue("nutrition");
             NutritionType nutritionType =  NutritionType.valueOf(nutrition);
@@ -72,7 +72,7 @@ public class SAXVoucherParserHandler extends DefaultHandler {
                 room.setNutrition(nutritionType);
             }
             voucher.setRoom(room);
-        } else if (qName.equalsIgnoreCase("cost")) {
+        } else if (qName.equalsIgnoreCase("vch:cost")) {
             double price = Double.parseDouble(attributes.getValue("total"));
             voucher.setPrice(price);
         }
@@ -81,23 +81,23 @@ public class SAXVoucherParserHandler extends DefaultHandler {
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
         super.endElement(uri, localName, qName);
-        if (qName.equalsIgnoreCase("voucher")) {
+        if (qName.equalsIgnoreCase("vch:voucher")) {
             vouchers.add(voucher);
-        } else if (qName.equalsIgnoreCase("type")) {
+        } else if (qName.equalsIgnoreCase("vch:type")) {
             VoucherType type = VoucherType.getType(value);
             if (type != null) {
                 voucher.setType(type);
             }
-        } else if (qName.equalsIgnoreCase("country")) {
+        } else if (qName.equalsIgnoreCase("vch:country")) {
             country = new Country(value);
-        } else if (qName.equalsIgnoreCase("transport")) {
+        } else if (qName.equalsIgnoreCase("vch:transport")) {
             TransportType transportType = TransportType.getType(value);
             if (transportType != null) {
                 voucher.setTransportType(transportType);
             }
-        } else if (qName.equalsIgnoreCase("facility")) {
+        } else if (qName.equalsIgnoreCase("vch:facility")) {
             room.addFacility(new Facility(value));
-        } else if (qName.equalsIgnoreCase("includes")) {
+        } else if (qName.equalsIgnoreCase("vch:includes")) {
             voucher.addIncludes(value);
         }
     }
