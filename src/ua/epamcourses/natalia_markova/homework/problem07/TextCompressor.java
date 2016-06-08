@@ -155,7 +155,7 @@ public class TextCompressor {
     public static void main(String[] args) {
         String textString = "";
 //        String fileName = "O:\\!Java\\text compressor test.txt";
-        String fileName = "O:\\!Java\\compositions.txt";
+        String fileName = "D:\\!Java\\compositions.txt";
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName));) {
             String line = "";
             while ((line = reader.readLine()) != null) {
