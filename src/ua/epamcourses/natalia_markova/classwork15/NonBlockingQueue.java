@@ -1,4 +1,4 @@
-package ua.epamcourses.natalia_markova.classwork15.task01;
+package ua.epamcourses.natalia_markova.classwork15;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
