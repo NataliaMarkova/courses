@@ -16,7 +16,8 @@ public class Main {
         String dir = System.getProperty("user.dir");
         String xmlFileName = dir + "\\tourist_voucher.xml";
         String xsdFileName = dir + "\\tourist_voucher.xsd";
-        String xslFileName = dir + "\\tourist_voucher.xsl";
+//        String xslFileName = dir + "\\tourist_voucher.xsl";
+        String xslFileName = dir + "\\tourist_voucher_table.xsl";
         String resultFileName = dir + "\\tourist_voucher.html";
 
         XMLValidator validator = new XMLValidator();
