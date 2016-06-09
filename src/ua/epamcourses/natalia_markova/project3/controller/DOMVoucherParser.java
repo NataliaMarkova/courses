@@ -28,7 +28,7 @@ public class DOMVoucherParser implements VoucherXMLParser {
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
         Document doc = dBuilder.parse(new File(xmlFileName));
         doc.getDocumentElement().normalize();
-        NodeList nodes = doc.getElementsByTagName("vch:voucher");
+        NodeList nodes = doc.getElementsByTagName("voucher");
         for (int i = 0; i < nodes.getLength(); i++) {
             Node node = nodes.item(i);
             Element element = (Element) node;
@@ -37,25 +37,25 @@ public class DOMVoucherParser implements VoucherXMLParser {
             TouristVoucher voucher = new TouristVoucher(id);
             vouchers.add(voucher);
 
-            VoucherType voucherType = VoucherType.getType(element.getElementsByTagName("vch:Type").item(0).getTextContent());
+            VoucherType voucherType = VoucherType.getType(element.getElementsByTagName("Type").item(0).getTextContent());
             if (voucherType != null) {
                 voucher.setType(voucherType);
             }
 
-            Country country = new Country(element.getElementsByTagName("vch:Country").item(0).getTextContent());
+            Country country = new Country(element.getElementsByTagName("Country").item(0).getTextContent());
 
-            Element el = (Element) element.getElementsByTagName("vch:Duration").item(0);
+            Element el = (Element) element.getElementsByTagName("Duration").item(0);
             int days = Integer.parseInt(el.getAttribute("days"));
             int nights = Integer.parseInt(el.getAttribute("nights"));
             voucher.setDays(days);
             voucher.setNights(nights);
 
-            TransportType transportType = TransportType.getType(element.getElementsByTagName("vch:Transport").item(0).getTextContent());
+            TransportType transportType = TransportType.getType(element.getElementsByTagName("Transport").item(0).getTextContent());
             if (transportType != null) {
                 voucher.setTransportType(transportType);
             }
 
-            el = (Element) element.getElementsByTagName("vch:Hotel").item(0);
+            el = (Element) element.getElementsByTagName("Hotel").item(0);
             String name = el.getAttribute("name");
             String type = el.getAttribute("type");
             Hotel hotel = new Hotel(name, country);
@@ -79,11 +79,11 @@ public class DOMVoucherParser implements VoucherXMLParser {
                 room.addFacility(new Facility(fn.getTextContent()));
             }
 
-            el = (Element) element.getElementsByTagName("vch:Cost").item(0);
+            el = (Element) element.getElementsByTagName("Cost").item(0);
             double price = Double.parseDouble(el.getAttribute("total"));
             voucher.setPrice(price);
 
-            childNodes = el.getElementsByTagName("vch:Includes");
+            childNodes = el.getElementsByTagName("Includes");
             for (int j = 0; j < childNodes.getLength(); j++) {
                 Node fn = childNodes.item(j);
                 voucher.addIncludes(fn.getTextContent());

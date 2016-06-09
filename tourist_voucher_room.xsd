@@ -1,0 +1,30 @@
+<?xml version="1.0" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.markova.kiev.ua/epam_courses/project3" xmlns:vch="http://www.markova.kiev.ua/epam_courses/project3">
+
+	<xs:element name="Room" type="vch:RoomType"/>
+
+	<xs:complexType name="RoomType" mixed="true">
+		<xs:sequence>
+			<xs:element name="Facilities" minOccurs="0" maxOccurs="1">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Facility" minOccurs="1" maxOccurs="unbounded" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="type" type="xs:string" use="required"/>
+		<xs:attribute name="nutrition" type="vch:NutritionType" use="required" />
+	</xs:complexType>
+
+	<xs:simpleType name="NutritionType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NM"/>
+			<xs:enumeration value="BB"/>
+			<xs:enumeration value="HB"/>
+			<xs:enumeration value="AI"/>
+			<xs:enumeration value="UAI"/>
+		</xs:restriction>
+	</xs:simpleType> 
+
+</xs:schema>

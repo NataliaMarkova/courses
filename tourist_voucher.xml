@@ -1,32 +1,34 @@
-<?xml version="1.0" encoding="windows-1251"?>
+<?xml version="1.0" encoding="windows-1251" ?>
 
-<vch:vouchers xmlns:vch="http://www.markova.kiev.ua/epam_courses/project3">
-	<vch:voucher id="1">
-		<vch:Type>Leisure</vch:Type>
-		<vch:Country>Spain</vch:Country>
-		<vch:Duration days="8" nights="7"/>
-		<vch:Transport>Avia</vch:Transport>
-		<vch:Hotel name="Andalusian miracle" type="***" />
-		<vch:Room type="double (standart)" nutrition="HB">
+<vouchers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="tourist_voucher.xsd">
+<!--<vouchers>-->
+	<voucher id="1">
+		<Type>Leisure</Type>
+		<Country>Spain</Country>
+		<Duration days="8" nights="7"/>
+		<Transport>Avia</Transport>
+		<Hotel name="Andalusian miracle" type="***" />
+		<vch:Room xmlns:vch="http://www.markova.kiev.ua/epam_courses/project3"
+				  type="double (standart)" nutrition="HB" >
 			<vch:Facilities>
 				<vch:Facility>Conditioner</vch:Facility>
 				<vch:Facility>TV</vch:Facility>
 			</vch:Facilities>
-		</vch:Room> 
-		<vch:Cost total="1000.00">
-			<vch:Includes>Transfer</vch:Includes>
-			<vch:Includes>Flight</vch:Includes>
-			<vch:Includes>Accomodation</vch:Includes>
-			<vch:Includes>Nutrition</vch:Includes>
-		</vch:Cost>
-	</vch:voucher>
-	<vch:voucher id="2">
-		<vch:Type>Leisure</vch:Type>
-		<vch:Country>Spain</vch:Country>
-		<vch:Duration days="10" nights="9"/>
-		<vch:Transport>Avia</vch:Transport>
-		<vch:Hotel name="Bilbao miracle" type="***" />			
-		<vch:Room type="4-bedrooms apartment" nutrition="NM" >
+		</vch:Room>
+		<Cost total="1000.00">
+			<Includes>Transfer</Includes>
+			<Includes>Flight</Includes>
+			<Includes>Accomodation</Includes>
+			<Includes>Nutrition</Includes>
+		</Cost>
+	</voucher>
+	<voucher id="2">
+		<Type>Leisure</Type>
+		<Country>Spain</Country>
+		<Duration days="10" nights="9"/>
+		<Transport>Avia</Transport>
+		<Hotel name="Bilbao miracle" type="***" />
+		<vch:Room xmlns:vch="http://www.markova.kiev.ua/epam_courses/project3" type="4-bedrooms apartment" nutrition="NM" >
 			<vch:Facilities>
 				<vch:Facility>Conditioner</vch:Facility>
 				<vch:Facility>TV</vch:Facility>
@@ -34,9 +36,9 @@
 				<vch:Facility>Swimming pool</vch:Facility>
 			</vch:Facilities>
 		</vch:Room>
-		<vch:Cost total="3000.00">
-			<vch:Includes>Flight</vch:Includes>
-			<vch:Includes>Accommodation</vch:Includes>
-		</vch:Cost>
-	</vch:voucher>
-</vch:vouchers>
+		<Cost total="3000.00">
+			<Includes>Flight</Includes>
+			<Includes>Accommodation</Includes>
+		</Cost>
+	</voucher>
+</vouchers>

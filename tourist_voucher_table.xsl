@@ -17,14 +17,14 @@
 						<td align="center"><b>Hotel characteristics</b></td>
 						<td align="center"><b>Cost</b></td>
 					</tr>
-					<xsl:for-each select="vch:vouchers/vch:voucher">
+					<xsl:for-each select="vouchers/voucher">
 						<tr>
 							<td align="center" vlign="top"><xsl:value-of select="@id" /></td>
-							<td align="center" vlign="top"><xsl:value-of select="vch:Type" /></td>
-							<td align="center" vlign="top"><xsl:value-of select="vch:Country" /></td>
-							<td align="center" vlign="top"><xsl:value-of select="vch:Duration/@days"/>/<xsl:value-of select="vch:Duration/@nights"/></td>
-							<td align="center" vlign="top"><xsl:value-of select="vch:Transport" /></td>
-							<td align="center" vlign="top"><xsl:value-of select="vch:Hotel/@name" /><xsl:value-of select="vch:Hotel/@type" /><br/>
+							<td align="center" vlign="top"><xsl:value-of select="Type" /></td>
+							<td align="center" vlign="top"><xsl:value-of select="Country" /></td>
+							<td align="center" vlign="top"><xsl:value-of select="Duration/@days"/>/<xsl:value-of select="Duration/@nights"/></td>
+							<td align="center" vlign="top"><xsl:value-of select="Transport" /></td>
+							<td align="center" vlign="top"><xsl:value-of select="Hotel/@name" /><xsl:value-of select="Hotel/@type" /><br/>
 								<xsl:value-of select="vch:Room/@type" />, <xsl:value-of select="vch:Room/@nutrition" /><br/>
 								<xsl:variable name="set" select="vch:Room/vch:Facilities/vch:Facility" />
 								<xsl:variable name="count" select="count($set)" />
@@ -32,8 +32,8 @@
 									<xsl:value-of select="." /><xsl:if test="position() &lt; $count">, </xsl:if>
 								</xsl:for-each><br/>
 							</td>
-							<td align="center">&#8364;<xsl:value-of select="vch:Cost/@total" /><br/>
-								<xsl:variable name="set" select="vch:Cost/vch:Includes" />
+							<td align="center">&#8364;<xsl:value-of select="Cost/@total" /><br/>
+								<xsl:variable name="set" select="Cost/Includes" />
 								<xsl:variable name="count" select="count($set)" />
 								<xsl:for-each select="$set">
 									<xsl:value-of select="." /><xsl:if test="position() &lt; $count">, </xsl:if>
