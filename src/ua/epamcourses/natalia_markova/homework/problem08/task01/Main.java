@@ -13,14 +13,16 @@ public class Main {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String expression = "";
+        System.out.println("Enter expression: ");
+        expression = reader.readLine();
         while (!expression.equalsIgnoreCase("exit")) {
-            System.out.println("Enter expression: ");
-            expression = reader.readLine();
             try {
                 System.out.println(expression + " = " + Calculator.calculate(expression));
             } catch (Exception e) {
                 System.out.println("Wrong expression!");
             }
+            System.out.println("Enter expression: ");
+            expression = reader.readLine();
         }
         reader.close();
     }
