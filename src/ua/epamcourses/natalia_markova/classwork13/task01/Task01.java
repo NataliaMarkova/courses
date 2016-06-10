@@ -1,7 +1,5 @@
 package ua.epamcourses.natalia_markova.classwork13.task01;
 
-import ua.epamcourses.natalia_markova.homework.task04.Main;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
