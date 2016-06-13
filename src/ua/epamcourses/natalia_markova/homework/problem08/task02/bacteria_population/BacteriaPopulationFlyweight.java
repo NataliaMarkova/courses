@@ -26,7 +26,7 @@ class Bacteria {
         if (cycle < 0) {
             throw new IllegalArgumentException();
         }
-        this.cycle = Math.max(cycle, CYCLE_DEAD);
+        this.cycle = Math.min(cycle, CYCLE_DEAD);
     }
 
     public LifeStage getLifeStage() {
@@ -66,8 +66,6 @@ enum BacteriaPopulationStage {
 
 class BacteriaPopulation {
 
-    private static final int BOUND = 50;
-
     private Map<Integer, Bacteria> bacteriaMap = new HashMap<>();
     private List<Bacteria> population = new ArrayList<>();
     private int newCount;
@@ -101,11 +99,14 @@ class BacteriaPopulation {
     }
 
     public BacteriaPopulationStage getStage() {
-        if (newCount - matureCount - deadCount < BOUND) {
+
+        int bound = population.size();
+
+        if (newCount > bound) {
             return BacteriaPopulationStage.LAG;
-        } else if (newCount - deadCount < BOUND && newCount > 0 && deadCount > 0) {
+        } else if (newCount - deadCount < bound / 10 && newCount > 0 && deadCount > 0) {
             return BacteriaPopulationStage.STATIONARY;
-        } else if (deadCount - newCount - matureCount > BOUND) {
+        } else if (deadCount > bound) {
             return BacteriaPopulationStage.DEATH;
         } else {
             return BacteriaPopulationStage.LOG;
