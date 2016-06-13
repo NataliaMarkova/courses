@@ -12,57 +12,10 @@ enum LifeStage {
     NEW, MATURE, DEAD
 }
 
-class SimpleBacteria {
-    private LifeStage lifeStage;
-
-    public SimpleBacteria(LifeStage lifeStage) {
-        this.lifeStage = lifeStage;
-    }
-
-    public LifeStage getLifeStage() {
-        return lifeStage;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        SimpleBacteria bacteria = (SimpleBacteria) o;
-        return lifeStage == bacteria.lifeStage;
-    }
-
-    @Override
-    public int hashCode() {
-        return lifeStage.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(lifeStage);
-    }
-}
-
-class SimpleBacteriaFactory {
-    private static Map<LifeStage, SimpleBacteria> simpleBacterias = new HashMap<>();
-    private SimpleBacteriaFactory() {
-    }
-
-    public static SimpleBacteria getSimpleBacteria(LifeStage lifeStage) {
-        if (simpleBacterias.containsKey(lifeStage)) {
-            return simpleBacterias.get(lifeStage);
-        }
-        SimpleBacteria simpleBacteria = new SimpleBacteria(lifeStage);
-        simpleBacterias.put(lifeStage, simpleBacteria);
-        return simpleBacteria;
-    }
-}
-
 class Bacteria {
     private static final int CYCLE_MATURE = 5;
     private static final int CYCLE_DEAD = 20;
 
-    private SimpleBacteria bacteria;
     private int cycle;
 
     public Bacteria() {
@@ -70,28 +23,40 @@ class Bacteria {
     }
 
     public Bacteria(int cycle) {
-        this.cycle = cycle;
-        if (cycle < CYCLE_MATURE) {
-            this.bacteria = SimpleBacteriaFactory.getSimpleBacteria(LifeStage.NEW);
-        } else if (cycle < CYCLE_DEAD) {
-            this.bacteria = SimpleBacteriaFactory.getSimpleBacteria(LifeStage.MATURE);
-        } else {
-            this.bacteria = SimpleBacteriaFactory.getSimpleBacteria(LifeStage.DEAD);
+        if (cycle < 0) {
+            throw new IllegalArgumentException();
         }
+        this.cycle = Math.max(cycle, CYCLE_DEAD);
     }
 
     public LifeStage getLifeStage() {
-        return bacteria.getLifeStage();
+        if (cycle < CYCLE_MATURE) {
+            return LifeStage.NEW;
+        } else if (cycle < CYCLE_DEAD) {
+            return LifeStage.MATURE;
+        } else {
+            return LifeStage.DEAD;
+        }
     }
 
-    public void live() {
-        cycle++;
-        if (cycle == CYCLE_MATURE) {
-            bacteria = SimpleBacteriaFactory.getSimpleBacteria(LifeStage.MATURE);
-        }
-        if (cycle == CYCLE_DEAD) {
-            bacteria = SimpleBacteriaFactory.getSimpleBacteria(LifeStage.DEAD);
-        }
+    public int getCycle() {
+        return cycle;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Bacteria bacteria = (Bacteria) o;
+
+        return cycle == bacteria.cycle;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return cycle;
     }
 }
 
@@ -103,6 +68,7 @@ class BacteriaPopulation {
 
     private static final int BOUND = 50;
 
+    private Map<Integer, Bacteria> bacteriaMap = new HashMap<>();
     private List<Bacteria> population = new ArrayList<>();
     private int newCount;
     private int matureCount;
@@ -112,14 +78,14 @@ class BacteriaPopulation {
     }
 
     public BacteriaPopulation(List<Bacteria> population) {
-        this.population = population;
         for (Bacteria bacteria: population) {
+            this.population.add(getBacteria(bacteria.getCycle()));
             updateCounts(bacteria);
         }
     }
 
     public void addBacteria(int cycle) {
-        Bacteria bacteria = new Bacteria(cycle);
+        Bacteria bacteria = getBacteria(cycle);
         updateCounts(bacteria);
         population.add(bacteria);
     }
@@ -162,7 +128,7 @@ class BacteriaPopulation {
 
             for (Bacteria bacteria : population) {
                 LifeStage lifeStage = bacteria.getLifeStage();
-                bacteria.live();
+                bacteria = getBacteria(bacteria.getCycle() + 1);
                 if (lifeStage != bacteria.getLifeStage()) {
                     if (lifeStage == LifeStage.MATURE) {
                         newCount--;
@@ -171,18 +137,26 @@ class BacteriaPopulation {
                     }
                     updateCounts(bacteria);
                 }
+                newBacterias.add(bacteria);
                 if (bacteria.getLifeStage() == LifeStage.MATURE) {
-                    newBacterias.add(new Bacteria());
+                    newBacterias.add(getBacteria(0));
+                    newCount++;
                 }
             }
 
-            for (Bacteria bacteria : newBacterias) {
-                population.add(bacteria);
-                newCount++;
-            }
+            population.clear();
+            population.addAll(newBacterias);
         }
 
     }
+
+    private Bacteria getBacteria(int cycle) {
+        if (!bacteriaMap.containsKey(cycle)) {
+            bacteriaMap.put(cycle, new Bacteria(cycle));
+        }
+        return bacteriaMap.get(cycle);
+    }
+
 }
 
 public class BacteriaPopulationFlyweight {
@@ -202,7 +176,7 @@ public class BacteriaPopulationFlyweight {
         population.live(20);
         System.out.println(population);
         System.out.println(population.getStage());
-        population.live(20);
+        population.live(5);
         System.out.println(population);
         System.out.println(population.getStage());
 
