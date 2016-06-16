@@ -9,24 +9,39 @@ import java.util.concurrent.*;
  * Created by natalia_markova on 14.06.2016.
  */
 
-class UnitOperation implements Callable<Integer> {
-    private int a;
-    private int b;
+class MultiplyRunnable implements Runnable {
+
     private int[][] matrixA;
     private int[][] matrixB;
+    private int line;
+    private int result[];
 
-    public UnitOperation(int[][] matrixA, int[][] matrixB, int a, int b) {
-        this.a = a;
-        this.b = b;
+    public MultiplyRunnable(int[][] matrixA, int[][] matrixB, int line) {
         this.matrixA = matrixA;
         this.matrixB = matrixB;
+        this.line = line;
+    }
+
+    public int[] getResult() {
+        return result;
+    }
+
+    public int getLine() {
+        return line;
     }
 
     @Override
-    public Integer call() {
+    public void run() {
+        result = new int[matrixB[0].length];
+        for (int j = 0; j < matrixB[0].length; j++) {
+            result[j] = getValueFor(j);
+        }
+    }
+
+    private int getValueFor(int index) {
         int result = 0;
         for (int i = 0; i < matrixA[0].length; i++) {
-                result = result + matrixA[a][i]*matrixB[i][b];
+            result = result + matrixA[line][i]*matrixB[i][index];
         }
         return result;
     }
@@ -54,35 +69,31 @@ public class MatrixMultiplication {
         System.out.println("Matrix AxB:");
         printMatrix(matrixAB);
         System.out.println();
+
     }
 
-    private static int[][] multiply(int[][] matrixA, int[][] matrixB) throws InterruptedException, ExecutionException {
-
+    private static int[][] multiply(int[][] matrixA, int[][] matrixB) throws InterruptedException {
         int m = matrixA.length;
         int k = matrixB[0].length;
 
         int[][] matrixAB = new int[m][k];
-        ExecutorService executor = Executors.newFixedThreadPool(m*k);
-        List<Future<Integer>> futures = new ArrayList<>();
+        List<MultiplyRunnable> runnables = new ArrayList<>();
 
         for (int i = 0; i < m; i++) {
-            for (int j = 0; j < k; j++) {
-                UnitOperation unitOperation = new UnitOperation(matrixA, matrixB, i, j);
-                Future<Integer> future = executor.submit(unitOperation);
-                futures.add(future);
+            MultiplyRunnable runnable = new MultiplyRunnable(matrixA, matrixB, i);
+            runnables.add(runnable);
+            Thread thread = new Thread(runnable);
+            thread.start();
+            thread.join();
+        }
+
+        for (MultiplyRunnable runnable: runnables) {
+            int i = runnable.getLine();
+            int[] result = runnable.getResult();
+            for (int j = 0; j< result.length; j++) {
+                matrixAB[i][j] = result[j];
             }
         }
-
-        executor.shutdown();
-        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
-
-        for (int index = 0; index < futures.size(); index++) {
-            Future<Integer> future = futures.get(index);
-            int i = index % m;
-            int j = index % k;
-            matrixAB[i][j] = future.get();
-        }
-
         return matrixAB;
     }
 
@@ -90,7 +101,7 @@ public class MatrixMultiplication {
         int[][] matrix = new int[m][n];
         for (int i = 0; i < m; i++) {
             for (int j = 0; j < n; j++) {
-                matrix[i][j] = getRandomNumber(0, 10);
+                matrix[i][j] = getRandomNumber(0, 5);
             }
         }
         return matrix;

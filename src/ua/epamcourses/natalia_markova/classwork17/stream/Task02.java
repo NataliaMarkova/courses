@@ -10,8 +10,15 @@ import java.util.stream.Stream;
 public class Task02 {
 
     public static void main(String[] args) {
-        Supplier<Stream<String>> streamSupplier = () -> Arrays.asList("a1", "a2").stream();
-        Stream<String> stream = streamSupplier.get();
+//        Supplier<Stream<String>> streamSupplier = () -> Arrays.asList("a1", "a2").stream();
+//        Stream<String> stream = streamSupplier.get();
+
+        String s = "";
+        s.concat(s);
+
+
+
      }
+
 
 }
