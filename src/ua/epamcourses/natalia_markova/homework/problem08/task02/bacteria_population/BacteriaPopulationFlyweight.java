@@ -1,7 +1,5 @@
 package ua.epamcourses.natalia_markova.homework.problem08.task02.bacteria_population;
 
-import com.sun.istack.internal.NotNull;
-
 import java.util.*;
 
 /**
@@ -100,13 +98,13 @@ class BacteriaPopulation {
 
     public BacteriaPopulationStage getStage() {
 
-        int bound = population.size();
+        int total = newCount + matureCount + deadCount ;
 
-        if (newCount > bound) {
+        if (newCount > matureCount + deadCount) {
             return BacteriaPopulationStage.LAG;
-        } else if (newCount - deadCount < bound / 10 && newCount > 0 && deadCount > 0) {
+        } else if (newCount - deadCount < total / 10 && newCount > 0 && deadCount > 0) {
             return BacteriaPopulationStage.STATIONARY;
-        } else if (deadCount > bound) {
+        } else if (deadCount > total) {
             return BacteriaPopulationStage.DEATH;
         } else {
             return BacteriaPopulationStage.LOG;
@@ -125,7 +123,7 @@ class BacteriaPopulation {
     public void live(int cycles) {
 
         for (int i = 0; i < cycles; i++) {
-            List<Bacteria> newBacterias = new ArrayList<>();
+            List<Bacteria> newPopulation = new ArrayList<>();
 
             for (Bacteria bacteria : population) {
                 LifeStage lifeStage = bacteria.getLifeStage();
@@ -138,17 +136,16 @@ class BacteriaPopulation {
                     }
                     updateCounts(bacteria);
                 }
-                newBacterias.add(bacteria);
+                if (bacteria.getLifeStage() != LifeStage.DEAD) {
+                    newPopulation.add(bacteria);
+                }
                 if (bacteria.getLifeStage() == LifeStage.MATURE) {
-                    newBacterias.add(getBacteria(0));
+                    newPopulation.add(getBacteria(0));
                     newCount++;
                 }
             }
-
-            population.clear();
-            population.addAll(newBacterias);
+            population = newPopulation;
         }
-
     }
 
     private Bacteria getBacteria(int cycle) {

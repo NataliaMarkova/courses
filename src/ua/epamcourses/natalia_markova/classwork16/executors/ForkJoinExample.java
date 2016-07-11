@@ -61,22 +61,22 @@ class Solution implements Runnable {
     }
 
     public double f(double x) {
-        return x + 3;
+        return x*x + 2*x - 3;
     }
 }
 
 public class ForkJoinExample {
 
     public static void main(String[] args) throws InterruptedException {
-        Solution s = new Solution(-5, 5, 0.000000000001);
+        Solution s = new Solution(-100, 0, 0.000000000001);
         Thread thread = new Thread(s);
         thread.start();
         thread.join();
         System.out.println(s.result);
 
-        ForkSolution task = new ForkSolution();
-//        ForkJoinPool pool = new ForkJoinPool().invoke(task);
-        System.out.println(task.join());
+//        ForkSolution task = new ForkSolution();
+////        ForkJoinPool pool = new ForkJoinPool().invoke(task);
+//        System.out.println(task.join());
     }
 
 }
