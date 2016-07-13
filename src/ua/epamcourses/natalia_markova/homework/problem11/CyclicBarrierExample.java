@@ -2,6 +2,7 @@ package ua.epamcourses.natalia_markova.homework.problem11;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
 
 /**
  * Created by natalia_markova on 07.07.2016.
@@ -11,6 +12,7 @@ class CyclicBarrier {
     private int numberOfThreads;
     private Runnable runnable;
     private volatile int count;
+    private volatile int countDown;
 
     public CyclicBarrier(int numberOfThreads) {
         this.numberOfThreads = numberOfThreads;
@@ -21,17 +23,27 @@ class CyclicBarrier {
         this.runnable = runnable;
     }
 
-    public synchronized int await() throws InterruptedException {
+    public synchronized int await() throws InterruptedException, BrokenBarrierException {
+        if (count == numberOfThreads) {
+            throw new BrokenBarrierException();
+        }
         int result = ++count;
-        if (count < numberOfThreads) {
+        while (count < numberOfThreads) {
+            System.out.println("Thread " + Thread.currentThread().getName() + " is waiting");
             wait();
-        } else {
+        }
+        if (result == numberOfThreads) {
             if (runnable != null) {
                 Thread thread = new Thread(runnable);
                 thread.start();
                 thread.join();
             }
+            countDown = count;
             notifyAll();
+        }
+        countDown--;
+        if (countDown == 0) {
+            System.out.println("Thread " + Thread.currentThread().getName() + " set count to o");
             count = 0;
         }
         return result;
@@ -49,12 +61,17 @@ class MyThread extends Thread {
     @Override
     public void run() {
         System.out.println("Thread " + Thread.currentThread().getName() + " is running");
-        try {
-            Thread.sleep(100);
-            int number = cyclicBarrier.await();
-            System.out.println("Thread " + Thread.currentThread().getName() + " stopped waiting (count == " + number + ")");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (true) {
+            try {
+                Thread.sleep(100);
+                int number = cyclicBarrier.await();
+                System.out.println("Thread " + Thread.currentThread().getName() + " stopped waiting (count == " + number + ")");
+                break;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (BrokenBarrierException e) {
+//                e.printStackTrace();
+            }
         }
     }
 }
