@@ -10,71 +10,170 @@ import java.util.concurrent.atomic.AtomicReference;
 
 class NonBlockingQueue<V> {
 
-    private volatile int size;
+    private AtomicInteger size = new AtomicInteger(0);
     private AtomicReference<Node<V>> head;
     private AtomicReference<Node<V>> tail;
 
     public NonBlockingQueue() {
-        head = new AtomicReference<>(new Node<V>(null, null));
-        tail = head;
-        size = 0;
+        head = new AtomicReference<>(null);
+        tail = new AtomicReference<>(null);
     }
 
     static class Node<V> {
         private V value;
-        private AtomicReference<Node<V>> next;
+        private Node<V> next;
 
-        public Node(V value, AtomicReference<Node<V>> next) {
+        public Node(V value, Node<V> next) {
             this.value = value;
             this.next = next;
+        }
+
+        @Override
+        public String toString() {
+            return "Node{" +
+                    "value=" + value +
+                    '}';
         }
     }
 
     public void put(V value) {
-        Node<V> newNode = new Node<>(value, null);
         while (true) {
             Node<V> tailNode = tail.get();
-            Node<V> nextNode = tailNode.next.get();
-            if (tailNode == tail.get()) {
-                if (nextNode == null) {
-                    if (tailNode.next.compareAndSet(null, newNode)) {
-                        tail.compareAndSet(tailNode, nextNode);
-                        size++;
-                        break;
-                    }
-                } else {
-                    // another thread entered new node to the tail
-                    // try to change tail to nexNode
-                    tail.compareAndSet(tailNode, nextNode);
-
+            Node<V> newNode;
+            if (tailNode == null) {
+                newNode = new Node<>(value, null);
+                if (tail.compareAndSet(tailNode, newNode)) {
+                    head.set(newNode);
+                    size.incrementAndGet();
+                    break;
+                }
+            } else {
+                newNode = new Node<>(value, null);
+                if (tail.compareAndSet(tailNode, newNode)) {
+                    tailNode.next = newNode;
+                    size.incrementAndGet();
+                    break;
                 }
             }
+
         }
     }
 
-    public V get() {
+    public V poll() {
         V value = null;
-        if (head.get() == null) {
-            return null;
-        }
         while (true) {
             Node<V> headNode = head.get();
             Node<V> tailNode = tail.get();
-            Node<V> nexNode = headNode.next.get();
-            if (head.compareAndSet(headNode, nexNode)) {
-                tail.compareAndSet(headNode, nexNode);
-                value = headNode.value;
-                size--;
-                break;
+            if (headNode == null) {
+                return null;
+            }
+            Node<V> nextNode = headNode.next;
+            if (nextNode == null) {
+                if (tail.compareAndSet(tailNode, null)) {
+                    value = headNode.value;
+                    head.set(null);
+                    size.decrementAndGet();
+                    break;
+                }
+            } else {
+                if (head.compareAndSet(headNode, nextNode)) {
+                    value = headNode.value;
+                    size.decrementAndGet();
+                    break;
+                }
             }
         }
         return value;
     }
 
+    public int size() {
+        return size.get();
+    }
 
+    @Override
+    public String toString() {
+        Node<V> node = head.get();
+        if (node == null) {
+            return "[]";
+        }
+        StringBuilder str = new StringBuilder("[");
+        while (node != null) {
+            str.append(node.value).append(", ");
+            node = node.next;
+        }
+        str.delete(str.length() - 2, str.length());
+        str.append("]");
+        return str.toString();
+    }
+}
+
+class MyThreadInsert extends Thread {
+
+    private NonBlockingQueue<Integer> queue;
+
+    public MyThreadInsert(NonBlockingQueue<Integer> queue) {
+        this.queue = queue;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 10; i++) {
+            queue.put(i);
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+}
+
+class MyThreadDelete extends Thread {
+
+    private NonBlockingQueue<Integer> queue;
+
+    public MyThreadDelete(NonBlockingQueue<Integer> queue) {
+        this.queue = queue;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 0; i < 10; i++) {
+            System.out.println(queue.poll());
+            try {
+                Thread.sleep(40);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
 
 public class NonBlockingQueueExample {
 
+    public static void main(String[] args) throws InterruptedException {
+        NonBlockingQueue<Integer> queue = new NonBlockingQueue<>();
+
+        MyThreadInsert threadInsert = new MyThreadInsert(queue);
+        MyThreadInsert threadInsert2 = new MyThreadInsert(queue);
+        MyThreadInsert threadInsert3 = new MyThreadInsert(queue);
+        MyThreadDelete threadDelete = new MyThreadDelete(queue);
+        MyThreadDelete threadDelete2 = new MyThreadDelete(queue);
+        MyThreadDelete threadDelete3 = new MyThreadDelete(queue);
+
+        threadInsert.start();
+        threadInsert2.start();
+        threadInsert3.start();
+//        threadInsert.join();
+        threadDelete.start();
+        threadDelete2.start();
+        threadDelete3.start();
+
+        Thread.sleep(1000);
+        System.out.println(queue);
+        System.out.println(queue.size());
+
+    }
 
 }
